@@ -10,7 +10,7 @@ locale                   : "en-US"
 title                    : "Tianyu Kong"
 title_separator          : "-"
 name                     : &name "Tianyu Kong"
-description              : &description "personal description"
+description              : &description "Graduate Student @ UMN Math"
 url                      : https://timkong98.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "timkong98.github.io"
@@ -82,12 +82,12 @@ analytics:
 author:
   name             : "Tianyu Kong"
   avatar           : "profile.png"
-  bio              : "Your biography for the left-hand sidebar"
-  location         : "Location"
+  bio              : "Graduate Student @ UMN Math"
+  location         : "320 Vincent Hall"
   employer         :
-  pubmed           : ""
-  googlescholar    : ""
-  email            :
+  pubmed           : 
+  googlescholar    : 
+  email            : "kong0226@umn.edu"
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
   bitbucket        :
@@ -109,7 +109,7 @@ author:
   stackoverflow    : # http://stackoverflow.com/users/123456/username
   steam            :
   tumblr           :
-  twitter          : ""
+  twitter          :
   vine             :
   weibo            :
   xing             :
