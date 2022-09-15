@@ -4,7 +4,7 @@ collection: talks
 type: "Poster"
 permalink: /talks/talk-1
 venue: "SIAM Conference on Applications of Dynamical Systems (DS21)"
-date: 2021-05
+date: 2021-05-23
 location: "Online"
 ---
 
