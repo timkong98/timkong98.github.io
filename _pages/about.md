@@ -18,5 +18,8 @@ Currently my research focuses on developing mathematical formulations and analys
 
 I also enjoy photography, movies, cycling, soccer...
 
->Things don't always go as planned. That's the beauty of science.
-*The Prestige*
+\
+\
+*Things don't always go as planned. That's the beauty of science.*
+
+*-- The Prestige*
