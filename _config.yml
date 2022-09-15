@@ -16,7 +16,7 @@ baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "timkong98.github.io"
 teaser                   : "500x300.png" # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
 
-logo: "/images/site-logo.png"
+logo: "site-logo.png"
 
 
 breadcrumbs              : false # true, false (default)
