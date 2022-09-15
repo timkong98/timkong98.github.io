@@ -1,5 +1,5 @@
 ---
-title: "Honors Calculus 1-3"
+title: "MATH 16100 - 16300 Honors Calculus 1-3"
 collection: teaching
 type: "Grader"
 permalink: /teaching/2018-2019
