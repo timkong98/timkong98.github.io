@@ -3,10 +3,9 @@ title: "Bistritzer-MacDonald dynamics in twisted bilayer graphene"
 collection: publications
 permalink: /publication/paper-2
 excerpt: 
-date: 2022-07-27
-venue: 'Submitted to arXiv'
-paperurl: 'https://arxiv.org/abs/2207.13767'
-citation: '	arXiv:2207.13767 [cond-mat.mes-hall]'
+date: 2023-03-13
+venue: 'J. Math. Phys. 64, 031502 (2023)'
+paperurl: 'https://pubs.aip.org/aip/jmp/article/64/3/031502/2881557'
 ---
 
 Alexander B. Watson, Tianyu Kong, Allan H. MacDonald, Mitchell Luskin
