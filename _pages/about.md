@@ -14,6 +14,7 @@ My research interest lies in mathematical modeling and numerical analysis of ele
 
 The starting point of my research is the atomistic tight-binding model of twisted bilayer graphene. The single electron wave functions are evaluated on the lattice sites, and are isomorphic to $\ell^2(\mathbb{Z}^2)$ sequences in $\mathbb C^2$.
 ![lattice](/images/graphene_lattice.jpg)
+
 *Atomic structure of single layer graphene*
 
 The quantum dynamics of electrons is governed by the Schrödinger equation $i \partial_t \psi = H\psi$, where the Hamiltonian $H$ records the interactions between lattice sites, and the squared modulus of $\psi$ represents the electron probability density.
@@ -24,7 +25,7 @@ The accurate numerical computation of time evolved solutions is made challenging
 Bistritzer and MacDonald observed that the single-particle electronic properties of twisted bilayer graphene with a small twist angle can often be captured by effective continuum models.
 The Bistritzer-MacDonald (BM) Hamiltonian is a system of PDEs with periodic coefficients over the moiré lattice, the periodicity allows its solutions to be expressed using Bloch band theory. This effective model correctly predicted near-zero electron dispersion when the twist angle is near the magic angle $\theta \approx 1.05 ^\circ$. 
 
-![band](/images/band_structure.pdf)
+![band](/images/band_structure.png)
 *BM band structure for TBG*
 
 In [my first paper](https://timkong98.github.io/publication/paper-2), we considered the tight-binding model in TBG with spectrally concentrated wave-packet initial data. We estimated the difference between the wave-packet time-evolved according to the tight-binding model $\psi_{\text{TB}}(t)$, and the same wave-packet time-evolved according to the BM model $\psi_{\text{BM}}(t)$. Let $\epsilon$ be the spectral width of the wave-packet, $\theta$ the twist angle, and $\mathfrak h$ the ratio between intralayer and interlayer hopping strength, the main theorem is
