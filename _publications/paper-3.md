@@ -3,8 +3,8 @@ title: "Modeling of electronic dynamics in twisted bilayer graphene"
 collection: publications
 permalink: /publication/paper-3
 excerpt: 
-date: 2023-08-21
-venue: 'submitted to arxiv'
+date: 2024-06-30
+venue: 'SIAM J. Appl. Math. 84, 1011 (2024)'
 paperurl: 'https://arxiv.org/pdf/2308.10430'
 ---
 
