@@ -4,7 +4,8 @@ title: "Teaching"
 permalink: /teaching/
 author_profile: true
 ---
+{% include base_path %}
 
-<h1>Grader</h1>
-<p>Fall 2022 - Spring 2024 Mathematical Modeling and Applied Mathematics </p>
-<p>Spring 2024 Functional analysis </p>
+{% for post in site.teaching reversed %}
+  {% include archive-single.html %}
+{% endfor %}
