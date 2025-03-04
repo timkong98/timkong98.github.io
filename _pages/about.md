@@ -26,7 +26,6 @@ $i \partial_t \psi = H\psi,$
 *Atomic structure of single layer graphene*
 
 ![moire](/images/moire_white_background.png)
-
 *Atomic structure of twisted bilayer graphene, with an approximate periodic pattern*
 
  Accurately solving the the Schrödinger equation is challenging by the fact that the model contains an infinite number of atoms. For periodic materials (crystals), methods like Bloch-Floquet theory simplify the problem by reducing it into a simpler problem on a single unit cell.  Although the moiré patterns in TBG look periodic, they are in fact not periodic at generic twist angles, requiring new approaches to account for subtle variations.
@@ -43,7 +42,6 @@ is sufficiently large. This work establishes a baseline for comparing results fr
  Bistritzer and MacDonald observed that the single-particle electronic properties of TBG can often be captured by effective simplified models.
 The Bistritzer-MacDonald (BM) Hamiltonian is a system of partial differential equations that is periodic over the moiré pattern. This effective model correctly predicted essential features like flat electron energy bands near the "magic angle," where superconductivity and other exotic phases emerge. 
 ![band](/images/band_structure.png)
-
 *BM band structure for TBG*
 
 
@@ -61,7 +59,6 @@ $$
 I also carried out numerical simulations demonstrating that the higher-order model captures additional features absent in the original BM model. These findings suggest the higher-order accurate model captures important aspects of the physics of these materials.
 
 ![wavepacket](/images/dynamics.png)
-
 *Numerical simulations of wave packets*
 
 
