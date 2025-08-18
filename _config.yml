@@ -83,8 +83,7 @@ analytics:
 
 # Site Author
 author:
-  name             : "Tianyu Kong"
-  name_cn          : "孔天煜"
+  name             : "Tianyu Kong 孔天煜"
   avatar           : "tk_profile_square.jpg"
   bio              : "Graduate Student @ UMN Applied Math"
   location         : "320 Vincent Hall"
