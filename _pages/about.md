@@ -12,3 +12,6 @@ I am a 4th year applied mathematics Ph.D. student at the University of Minnesota
 
 
 My research interest lies in the mathematical modeling and numerical analysis of the electronic properties of two-dimensional materials, especially twisted bilayer graphene (TBG). 
+
+
+2025-08: I am currently on the job market!
