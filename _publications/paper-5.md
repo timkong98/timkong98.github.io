@@ -1,10 +1,10 @@
 ---
-title: "Modeling and computing many-body electronic properties of twisted bilayer graphene with mechanical relaxation"
+title: "Interacting Twisted Bilayer Graphene with Systematic Modeling of Structural Relaxation"
 collection: publications
 permalink: /publication/paper-5
 excerpt: 
 date: 2025-04-07
-venue: 'arXiv preprint arXiv:2504.03479'
+venue: 'Electronic Structure. 035001 (2025)'
 paperurl: 'https://arxiv.org/abs/2504.03479'
 ---
 

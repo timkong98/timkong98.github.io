@@ -7,7 +7,7 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Tianyu Kong"
+title                    : "Tianyu Kong 孔天煜"
 title_separator          : "-"
 name                     : &name "Tianyu Kong"
 description              : &description "Graduate Student @ UMN Applied Math"
@@ -87,7 +87,7 @@ author:
   avatar           : "tk_profile_square.jpg"
   bio              : "Graduate Student @ UMN Applied Math"
   location         : "320 Vincent Hall"
-  employer         : "孔天煜"
+  employer         : 
   pubmed           : 
   googlescholar    : "https://scholar.google.com/citations?user=f9RLuJgAAAAJ&hl=en"
   email            : "kong0226@umn.edu"
