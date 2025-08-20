@@ -12,7 +12,8 @@ The tight-binding model is a mathematical approach used to describe the movement
 $i \partial_t \psi = H\psi,$
 where the Hamiltonian $H$ records the hopping strength between atom sites, and the wave function $\psi$ is a discrete sequence related to the probability of finding the electron at a certain atom. The model is relatively simple yet it is powerful for predicting energy levels and  conductivity in materials.
 
-![lattice](/images/graphene_lattice.jpg)
+<img src="/images/graphene_lattice.jpg" width="200">
+
 *Atomic structure of single layer graphene*
 
 ![moire](/images/moire_white_background.png)
