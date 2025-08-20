@@ -12,21 +12,16 @@ The tight-binding model is a mathematical approach used to describe the movement
 $i \partial_t \psi = H\psi,$
 where the Hamiltonian $H$ records the hopping strength between atom sites, and the wave function $\psi$ is a discrete sequence related to the probability of finding the electron at a certain atom. The model is relatively simple yet it is powerful for predicting energy levels and  conductivity in materials.
 
-<img src="/images/graphene_lattice.jpg" width="200">
-
-*Atomic structure of single layer graphene*
 
 ![moire](/images/moire_white_background.png)
 *Atomic structure of twisted bilayer graphene, with an approximate periodic pattern*
 
- Accurately solving the the Schrödinger equation is challenging by the fact that the model contains an infinite number of atoms, and is not periodic. 
-
-In [this paper](https://timkong98.github.io/publication/paper-3), I developed a method to compute the time evolution of a single electron in the tight-binding model for TBG. 
-The method relies on estimating the speed at which an electron can propagate through the material, given that the electron's ability to "hop" between atoms decreases exponentially with distance. By considering only interactions within a finite radius $R$, I derived an error estimate that quantifies the difference between solutions of the truncated model  $\psi_{\text{TB}, R}$ and the full infinite system $\psi_{\text{TB}}$.
+Accurately solving the the Schrödinger equation is challenging by the fact that the model contains an infinite number of atoms, and is not periodic. In [this paper](https://timkong98.github.io/publication/paper-3), I developed a method to compute the time evolution of a single electron in the tight-binding model for TBG. 
+The method relies on estimating the speed at which an electron can propagate through the material, given that the electron's ability to "hop" between atoms decreases exponentially with distance. By considering only interactions within a finite radius $R$, I derived an error estimate that quantifies the difference between solutions of the truncated model  $\psi_{\text{TB}, R}$ and the full infinite system $\psi_{\text{TB}}$
 $$
-        \|\psi_{\text{TB}}(t) - \psi_{\text{TB}, R}(t) \| \leq CR^{\frac{5}{2}}e^{-\kappa \left( v_{\max}(R - r) - t\right)},
+        \|\psi_{\text{TB}}(t) - \psi_{\text{TB}, R}(t) \| \leq CR^{\frac{5}{2}}e^{-\kappa \left( v_{\max}(R - r) - t\right)}.
 $$
- This estimate ensures that computations on a finite domain are valid for a given range of time if $R$
+This estimate ensures that computations on a finite domain are valid for a given range of time if $R$
 is sufficiently large.
 
 
@@ -58,6 +53,7 @@ I also carried out numerical simulations demonstrating that the higher-order mod
 Electron interactions with relaxation
 ------ 
 
+Much of the theoretical work on TBG has been based on analysis of the Bistritzer-MacDonald model which includes a phenomenological parameter to account for lattice relaxation. In [this work](https://timkong98.github.io/publication/paper-5), we use a newly developed continuum model which systematically accounts for the effects of structural relaxation. In particular, we model structural relaxation by coupling linear elasticity to a stacking energy that penalizes disregistry. We compare the impact of the two relaxation models on the corresponding many-body model by defining an interacting model projected to the flat bands. 
 
 
 
