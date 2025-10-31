@@ -7,6 +7,27 @@ author_profile: true
 Talks
 ------
 
+
+**[upcoming] Continuum Model for Relaxed Moire Bilayer Graphene**
+
+*2025.11* SIAM Conference on Analysis of Partial Differential Equations, Pittsburgh, PA
+
+
+**Multiscale Modeling of Electron Dynamics in Twisted Bilayer Graphene**
+
+*2025.10* University of Minnesota Duluth Math Colloquium, Duluth MN
+
+
+**Multi-scale Modeling of Electron Dynamics in Twisted Bilayer Graphene**
+
+*2025.10* UMN Seminar of Mathematical Applications & Computations, Minneapolis MN
+
+
+**Multiscale Modeling in Twisted Bilayer Graphene with Strain and Relaxation**
+
+*2025.09* SIAM Great Lakes Section Annual Meeting, Chicago IL
+
+
 **Modeling Electron Interactions in Twisted Bilayer Graphene**
 
 *2025.03* UMN Quantum Math Seminar, Minneapolis MN
