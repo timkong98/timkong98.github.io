@@ -1,4 +1,65 @@
 <script src="{{ base_path }}/assets/js/main.min.js"></script>
 
+<!-- Light/dark toggle. The pre-paint half of this lives in
+     _includes/head/custom.html; this half wires up the masthead button. -->
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn = document.querySelector('.theme-toggle');
+    if (!btn) { return; }
+
+    function prefersDark() {
+      return !!(window.matchMedia &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+
+    // The theme actually in effect: an explicit choice if there is one,
+    // otherwise whatever the OS says.
+    function effective() {
+      var t = root.getAttribute('data-theme');
+      return (t === 'light' || t === 'dark') ? t : (prefersDark() ? 'dark' : 'light');
+    }
+
+    function sync() {
+      var next = effective() === 'dark' ? 'light' : 'dark';
+      var text = 'Switch to ' + next + ' mode';
+      btn.setAttribute('aria-label', text);
+      btn.setAttribute('title', text);
+
+      // Once the user has chosen explicitly, the two media-scoped theme-color
+      // meta tags can disagree with the page, so collapse them into one.
+      if (root.getAttribute('data-theme')) {
+        var metas = document.querySelectorAll('meta[name="theme-color"]');
+        for (var i = metas.length - 1; i >= 0; i--) {
+          metas[i].parentNode.removeChild(metas[i]);
+        }
+        var m = document.createElement('meta');
+        m.setAttribute('name', 'theme-color');
+        m.setAttribute('content', effective() === 'dark' ? '#161514' : '#fdfbf8');
+        document.head.appendChild(m);
+      }
+    }
+
+    btn.addEventListener('click', function () {
+      var next = effective() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { window.localStorage.setItem('theme', next); } catch (e) {}
+      sync();
+    });
+
+    // With no explicit choice, keep following the OS if it changes live.
+    if (window.matchMedia) {
+      var mq = window.matchMedia('(prefers-color-scheme: dark)');
+      var onChange = function () {
+        if (!root.getAttribute('data-theme')) { sync(); }
+      };
+      if (mq.addEventListener) { mq.addEventListener('change', onChange); }
+      else if (mq.addListener) { mq.addListener(onChange); }
+    }
+
+    sync();
+  })();
+</script>
+
 {% include analytics.html %}
 {% include /comments-providers/scripts.html %}

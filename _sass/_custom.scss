@@ -19,7 +19,8 @@
    Tokens
    ========================================================================== */
 
-:root {
+@mixin theme-light {
+  color-scheme: light;
   --paper: #fdfbf8;      /* warm page ground */
   --paper-2: #f6f1ea;    /* recessed / card ground */
   --paper-3: #efe8de;    /* hover ground */
@@ -32,25 +33,50 @@
   --accent-hover: #5c0c1d;
   --accent-line: #d9b3bb;
   --accent-wash: #f7ecee;
+  --figure-mat: #ffffff;
   --shadow: 0 1px 2px rgba(28, 26, 25, 0.05);
+}
+
+@mixin theme-dark {
+  color-scheme: dark;
+  --paper: #161514;
+  --paper-2: #1e1c1a;
+  --paper-3: #262320;
+  --ink: #ece7e0;        /* 14.8:1 on --paper */
+  --ink-soft: #b6ada4;   /*  8.6:1 on --paper */
+  --ink-faint: #9a9088;  /*  6.2:1 on --paper */
+  --rule: #332f2b;
+  --rule-strong: #46403a;
+  --accent: #e2919c;     /*  7.6:1 on --paper */
+  --accent-hover: #f0b3bb;
+  --accent-line: #5e3239;
+  --accent-wash: #2a1e20;
+  --figure-mat: #ffffff; /* research figures are line art on white; matting
+                            them beats inverting them */
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Default: follow the OS. */
+:root {
+  @include theme-light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #161514;
-    --paper-2: #1e1c1a;
-    --paper-3: #262320;
-    --ink: #ece7e0;      /* 14.8:1 on --paper */
-    --ink-soft: #b6ada4; /*  8.6:1 on --paper */
-    --ink-faint: #9a9088;/*  6.2:1 on --paper */
-    --rule: #332f2b;
-    --rule-strong: #46403a;
-    --accent: #e2919c;   /*  7.6:1 on --paper */
-    --accent-hover: #f0b3bb;
-    --accent-line: #5e3239;
-    --accent-wash: #2a1e20;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    @include theme-dark;
   }
+}
+
+/* Explicit choice from the masthead toggle, persisted in localStorage and
+   applied to <html data-theme> before first paint by the inline script in
+   _includes/head/custom.html. These attribute selectors are (0,1,1), so they
+   outrank the :root blocks above regardless of the media query. */
+html[data-theme="light"] {
+  @include theme-light;
+}
+
+html[data-theme="dark"] {
+  @include theme-dark;
 }
 
 /*
@@ -75,11 +101,42 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* the theme opens up to 1280px at $x-large, which leaves a lopsided empty
-   right gutter next to the (now capped) text column */
+/*
+   Two-column grid.
+
+   Susy gives the sidebar 15.25% (~174px at desktop), which is too narrow for a
+   contact list -- "tianyuk@uchicago.edu" cannot sit on one line. It also gives
+   .page a 16.95% right suffix, leaving a lopsided empty gutter beside the text.
+
+   Replace both with explicit widths: a 240px sidebar (wide enough for the
+   longest email at full size) and a page column that takes the rest. Every
+   property susy set is restated here so nothing leaks through; this file is
+   imported last, so equal-specificity rules win on order.
+   ========================================================================== */
+
+$sidebar-w: 240px;
+$sidebar-gap: 36px;
+
 #main {
   @media (min-width: 80em) {
-    max-width: 1180px;
+    max-width: 1080px;
+  }
+}
+
+@media (min-width: 57.8125em) {
+  .sidebar {
+    width: $sidebar-w;
+    margin-right: $sidebar-gap;
+    padding-right: 0;
+    float: left;
+  }
+
+  .page {
+    width: calc(100% - #{$sidebar-w + $sidebar-gap});
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    float: right;
   }
 }
 
@@ -225,7 +282,9 @@ select:focus-visible,
   z-index: 30;
 }
 
+
 .masthead__inner-wrap {
+  position: relative; /* containing block for .theme-toggle */
   padding-top: 0.85em;
   padding-bottom: 0.85em;
   font-family: inherit;
@@ -259,6 +318,131 @@ select:focus-visible,
   border-bottom-color: transparent;
 }
 
+/*
+   Light / dark toggle. Sits absolutely at the masthead's right edge; the nav
+   gets a matching right margin so greedy-nav's width measurement (and the
+   hamburger it positions at its own right edge) never overlaps it.
+   ========================================================================== */
+
+.masthead__menu {
+  margin-right: 3.1rem;
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 50%;
+  right: 1em;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  z-index: 25;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+          justify-content: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  padding: 0;
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-transition: color 0.18s ease, border-color 0.18s ease,
+                      background-color 0.18s ease;
+          transition: color 0.18s ease, border-color 0.18s ease,
+                      background-color 0.18s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background-color: var(--accent-wash);
+}
+
+/*
+   Navicon bars, scaled and recoloured for the smaller circular button.
+
+   The overrides below are deliberately specific. The theme's open state
+   (.close .navicon...) is only (0,2,0)/(0,2,1), so a plain
+   `.greedy-nav button .navicon` rule would outrank it and break the X. Each
+   close-state property is therefore restated at higher specificity.
+   ========================================================================== */
+
+.greedy-nav button .navicon,
+.greedy-nav button .navicon:before,
+.greedy-nav button .navicon:after {
+  width: 15px;
+  height: 2px;
+  background-color: var(--ink-soft);
+}
+
+.greedy-nav button .navicon:before {
+  top: -5px;
+}
+
+.greedy-nav button .navicon:after {
+  bottom: -5px;
+}
+
+.greedy-nav button:hover .navicon,
+.greedy-nav button:hover .navicon:before,
+.greedy-nav button:hover .navicon:after {
+  background-color: var(--accent);
+}
+
+/* open state: middle bar hidden, outer bars stacked and crossed */
+.greedy-nav button.close .navicon {
+  background-color: transparent;
+}
+
+.greedy-nav button.close .navicon:before,
+.greedy-nav button.close .navicon:after {
+  top: 0;
+  bottom: auto;
+  width: 15px;
+}
+
+/* Show the icon for the mode the button will switch you TO. With no explicit
+   choice stored, that depends on the OS; once <html data-theme> is set, it
+   depends only on the attribute. */
+.theme-toggle__to-dark {
+  display: inline-block;
+}
+
+.theme-toggle__to-light {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) .theme-toggle__to-dark {
+    display: none;
+  }
+
+  html:not([data-theme]) .theme-toggle__to-light {
+    display: inline-block;
+  }
+}
+
+html[data-theme="dark"] .theme-toggle__to-dark {
+  display: none;
+}
+
+html[data-theme="dark"] .theme-toggle__to-light {
+  display: inline-block;
+}
+
+html[data-theme="light"] .theme-toggle__to-dark {
+  display: inline-block;
+}
+
+html[data-theme="light"] .theme-toggle__to-light {
+  display: none;
+}
+
 .greedy-nav {
   background: transparent;
 
@@ -267,8 +451,27 @@ select:focus-visible,
     display: none; /* kill the theme's sliding underline; we use border-bottom */
   }
 
+  /* Match the theme toggle: same circle, same weight. The theme ships a
+     full-height solid block with white 28x4px bars, which reads far too loud
+     beside it (and the white bars would vanish on a light ground). */
   button {
-    background-color: var(--accent);
+    position: absolute;
+    top: 50%;
+    right: 0;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+    width: 2.3rem;
+    height: 2.3rem;
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--ink-soft);
+  }
+
+  button:hover {
+    border-color: var(--accent);
+    background-color: var(--accent-wash);
   }
 
   .hidden-links {
@@ -319,7 +522,7 @@ select:focus-visible,
 
   @media (min-width: 57.8125em) {
     img {
-      max-width: 160px;
+      max-width: 180px;
     }
   }
 }
@@ -368,14 +571,16 @@ select:focus-visible,
 
 /* Disclosure toggle for the link list on narrow screens. Hidden from $large
    up, which is also the signal main.min.js reads to keep the list visible. */
+/* !important: the theme's .btn--inverse sets `color: $gray !important` and
+   `border: 1px solid $light-gray !important`. */
 .author__toggle {
   display: inline-block;
   margin: 0.9rem 0 0;
   padding: 0.42em 0.9em;
   background-color: transparent;
-  border: 1px solid var(--rule-strong);
+  border: 1px solid var(--rule-strong) !important;
   border-radius: 3px;
-  color: var(--ink-soft);
+  color: var(--ink-soft) !important;
   font-family: inherit;
   font-size: 0.82rem;
   letter-spacing: 0.01em;
@@ -384,8 +589,8 @@ select:focus-visible,
 }
 
 .author__toggle:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
   background-color: var(--accent-wash);
 }
 
@@ -446,11 +651,6 @@ select:focus-visible,
   .author__urls-label {
     min-width: 0;
     word-break: break-word;
-  }
-
-  /* email addresses are long; shrink them just enough to sit on one line */
-  a[href^="mailto:"] {
-    font-size: 0.75rem;
   }
 
   a:hover i,
@@ -779,7 +979,7 @@ select:focus-visible,
   margin: 0 auto 0.6rem;
   border: 1px solid var(--rule);
   border-radius: 3px;
-  background-color: #fff;
+  background-color: var(--figure-mat);
 }
 
 .page__content p > img + em {
@@ -923,64 +1123,54 @@ figcaption {
    Theme spots that hardcode a light background, patched for dark mode
    ========================================================================== */
 
-@media (prefers-color-scheme: dark) {
-  .btn--inverse {
-    background-color: var(--paper-2);
-    color: var(--ink);
-    border-color: var(--rule);
-  }
+/* These are driven by tokens rather than wrapped in a dark-mode media query, so
+   they follow the manual toggle too. The token values are correct in both
+   modes, so no duplication is needed. */
+p > code,
+a > code,
+li > code,
+figcaption > code,
+td > code,
+pre,
+.highlight {
+  background-color: var(--paper-2);
+  border-color: var(--rule);
+  color: var(--ink);
+}
 
-  p > code,
-  a > code,
-  li > code,
-  figcaption > code,
-  td > code,
-  pre,
-  .highlight {
-    background-color: var(--paper-2);
-    border-color: var(--rule);
-    color: var(--ink);
-  }
+.notice,
+.notice--info,
+.notice--warning,
+.notice--success,
+.notice--danger,
+.notice--primary {
+  background-color: var(--paper-2);
+  color: var(--ink-soft);
+}
 
-  .notice,
-  .notice--info,
-  .notice--warning,
-  .notice--success,
-  .notice--danger,
-  .notice--primary {
-    background-color: var(--paper-2);
-    color: var(--ink-soft);
-  }
+table {
+  color: var(--ink);
+}
 
-  table {
-    color: var(--ink);
-  }
+th {
+  background-color: var(--paper-2);
+  border-color: var(--rule);
+}
 
-  th {
-    background-color: var(--paper-2);
-    border-color: var(--rule);
-  }
+td {
+  border-color: var(--rule);
+}
 
-  td {
-    border-color: var(--rule);
-  }
+.page__taxonomy-item {
+  border-color: var(--rule);
+  color: var(--ink-soft);
+}
 
-  .page__taxonomy-item {
-    border-color: var(--rule);
-    color: var(--ink-soft);
-  }
-
-  /* research-page figures are line art on white; keep a white mat behind them
-     rather than inverting the images */
-  .page__content p > img {
-    background-color: #fff;
-  }
-
-  .MathJax,
-  .MathJax_Display,
-  .MathJax_CHTML {
-    color: var(--ink);
-  }
+.MathJax,
+.MathJax_Display,
+.MathJax_CHTML,
+.MJXc-display {
+  color: var(--ink);
 }
 
 /*
