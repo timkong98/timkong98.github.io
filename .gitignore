@@ -1,4 +1,5 @@
 _site/
+.sass-cache/
 
 _talks/.DS_Store
 _teaching/.DS_Store

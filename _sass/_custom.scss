@@ -1,0 +1,1076 @@
+/* ==========================================================================
+   CUSTOM — refined academic layer
+   --------------------------------------------------------------------------
+   Imported LAST from assets/css/main.scss so it wins over the theme without
+   editing Minimal Mistakes' own partials.
+
+   Constraints this file respects:
+   - Compiled by sassc/libsass on GitHub Pages: no @use/@forward, no sass
+     module functions, no min()/max()/clamp() (libsass would try to evaluate
+     min/max as sass functions), no var() inside rgba().
+   - Breakpoints are written as literal em media queries matching the theme's
+     $small 600px / $medium 768px / $large 925px / $x-large 1280px, since
+     _variables.scss sets breakpoint("to ems").
+   - Root font-size is 16px, and 18px from $medium up (see _reset.scss), so
+     rem values below scale with the viewport.
+   ========================================================================== */
+
+/*
+   Tokens
+   ========================================================================== */
+
+:root {
+  --paper: #fdfbf8;      /* warm page ground */
+  --paper-2: #f6f1ea;    /* recessed / card ground */
+  --paper-3: #efe8de;    /* hover ground */
+  --ink: #1c1a19;        /* body text            16.8:1 on --paper */
+  --ink-soft: #55504c;   /* secondary text        7.7:1 on --paper */
+  --ink-faint: #6f6862;  /* meta text             5.3:1 on --paper */
+  --rule: #e2dad0;       /* hairlines */
+  --rule-strong: #cfc4b6;
+  --accent: #7d1128;     /* deep maroon          10.3:1 on --paper */
+  --accent-hover: #5c0c1d;
+  --accent-line: #d9b3bb;
+  --accent-wash: #f7ecee;
+  --shadow: 0 1px 2px rgba(28, 26, 25, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #161514;
+    --paper-2: #1e1c1a;
+    --paper-3: #262320;
+    --ink: #ece7e0;      /* 14.8:1 on --paper */
+    --ink-soft: #b6ada4; /*  8.6:1 on --paper */
+    --ink-faint: #9a9088;/*  6.2:1 on --paper */
+    --rule: #332f2b;
+    --rule-strong: #46403a;
+    --accent: #e2919c;   /*  7.6:1 on --paper */
+    --accent-hover: #f0b3bb;
+    --accent-line: #5e3239;
+    --accent-wash: #2a1e20;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/*
+   Webfont stacks. Source Serif 4 is loaded in _includes/head/custom.html with
+   display=swap; the fallbacks carry the page if Google Fonts is unreachable.
+   The CJK faces are listed because the site title contains Chinese characters
+   that Source Serif 4 does not cover.
+   ========================================================================== */
+
+$display: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino,
+          Georgia, "Songti SC", "Noto Serif SC", serif;
+
+/*
+   Base
+   ========================================================================== */
+
+body {
+  background-color: var(--paper);
+  color: var(--ink);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* the theme opens up to 1280px at $x-large, which leaves a lopsided empty
+   right gutter next to the (now capped) text column */
+#main {
+  @media (min-width: 80em) {
+    max-width: 1180px;
+  }
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $display;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.25;
+}
+
+h1, .page__title {
+  font-size: 2rem;
+  line-height: 1.15;
+  letter-spacing: -0.018em;
+  margin-bottom: 1.1rem;
+}
+
+.page__content {
+  h2 {
+    margin-top: 2.6em;
+    margin-bottom: 0.9em;
+    padding-bottom: 0.38em;
+    font-size: 1.42rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  h3 {
+    margin-top: 2em;
+    font-size: 1.14rem;
+  }
+
+  p, li {
+    font-size: 1rem;
+  }
+
+  /* the theme transitions nearly every inline element; calm it down so text
+     does not shimmer on hover */
+  b, i, strong, em, span, p {
+    -webkit-transition: none;
+            transition: none;
+  }
+}
+
+/*
+   Measure. The theme's column is ~87 characters at desktop, well past the
+   60-75 comfortable range, so cap running prose. Components that carry their
+   own left gutter (timeline) or metadata rows (cards) get a little more room,
+   and figures more still.
+   ========================================================================== */
+
+.page__content {
+  > p,
+  > ul,
+  > ol,
+  > dl,
+  > blockquote,
+  > h2,
+  > h3,
+  > h4,
+  > table {
+    max-width: 34rem;
+  }
+
+  > .timeline,
+  > .pub-list,
+  > .awards,
+  > .section-head {
+    max-width: 40rem;
+  }
+
+  > p:has(> img) {
+    max-width: 44rem;
+  }
+}
+
+.section-head {
+  font-family: $display;
+  font-size: 1.42rem;
+  font-weight: 600;
+  margin: 2.6em 0 0.9em;
+  padding-bottom: 0.38em;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+}
+
+.page__lead {
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--ink-soft);
+}
+
+/*
+   Links
+   ========================================================================== */
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+a:visited {
+  color: var(--accent);
+}
+
+a:hover,
+a:focus {
+  color: var(--accent-hover);
+}
+
+.page__content a {
+  text-decoration: underline;
+  text-decoration-color: var(--accent-line);
+}
+
+.page__content a:hover {
+  text-decoration-color: var(--accent-hover);
+}
+
+/* visible keyboard focus everywhere; the theme only sets a dotted outline */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/*
+   Masthead
+   ========================================================================== */
+
+.masthead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  z-index: 30;
+}
+
+.masthead__inner-wrap {
+  padding-top: 0.85em;
+  padding-bottom: 0.85em;
+  font-family: inherit;
+}
+
+.masthead__menu-item {
+  a {
+    color: var(--ink-soft);
+    font-size: 0.86rem;
+    letter-spacing: 0.01em;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+  }
+
+  a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+}
+
+.masthead__menu-item--lg a {
+  font-family: $display;
+  font-size: 1.16rem;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.masthead__menu-item--lg a:hover {
+  color: var(--accent);
+  border-bottom-color: transparent;
+}
+
+.greedy-nav {
+  background: transparent;
+
+  .visible-links a:before,
+  .hidden-links a:before {
+    display: none; /* kill the theme's sliding underline; we use border-bottom */
+  }
+
+  button {
+    background-color: var(--accent);
+  }
+
+  .hidden-links {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    box-shadow: var(--shadow);
+
+    a {
+      color: var(--ink-soft);
+    }
+
+    &:after {
+      border-bottom-color: var(--paper);
+    }
+
+    &:before {
+      border-bottom-color: var(--rule);
+    }
+  }
+}
+
+/*
+   Author profile sidebar
+   ========================================================================== */
+
+.author__profile {
+  padding-bottom: 1.25em;
+  border-bottom: 1px solid var(--rule);
+
+  @media (min-width: 57.8125em) {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+}
+
+.author__avatar {
+  display: block;
+  width: auto;
+
+  img {
+    width: 100%;
+    max-width: 120px;
+    border-radius: 50%;
+    border: 1px solid var(--rule);
+    padding: 4px;
+    background: var(--paper);
+  }
+
+  @media (min-width: 57.8125em) {
+    img {
+      max-width: 160px;
+    }
+  }
+}
+
+.author__content {
+  display: block;
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+  line-height: 1.4;
+}
+
+.sidebar .author__name,
+.author__name {
+  font-family: $display;
+  font-size: 1.16rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0.85rem 0 0.3rem;
+  line-height: 1.2;
+}
+
+.author__bio {
+  margin: 0 0 0.3rem;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.author__org {
+  margin: 0;
+  color: var(--ink-faint);
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.author__loc {
+  display: block;
+  color: var(--ink-faint);
+}
+
+.author__urls-wrapper {
+  display: block;
+  cursor: auto;
+}
+
+/* Disclosure toggle for the link list on narrow screens. Hidden from $large
+   up, which is also the signal main.min.js reads to keep the list visible. */
+.author__toggle {
+  display: inline-block;
+  margin: 0.9rem 0 0;
+  padding: 0.42em 0.9em;
+  background-color: transparent;
+  border: 1px solid var(--rule-strong);
+  border-radius: 3px;
+  color: var(--ink-soft);
+  font-family: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.author__toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background-color: var(--accent-wash);
+}
+
+@media (min-width: 57.8125em) {
+  .author__toggle {
+    display: none;
+  }
+}
+
+.author__urls {
+  display: block;
+  position: static;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  list-style: none;
+
+  &:before,
+  &:after {
+    display: none;
+  }
+
+  li {
+    white-space: normal;
+    margin-bottom: 0;
+  }
+
+  /* flex so the icon stays on the first text line instead of being orphaned
+     above a wrapped label in the narrow sidebar column */
+  a {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: start;
+            align-items: flex-start;
+    padding: 0.3rem 0;
+    color: var(--ink-soft);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  i,
+  .ai {
+    -webkit-box-flex: 0;
+            flex: 0 0 auto;
+    margin-right: 0.45em;
+    line-height: 1.45;
+    color: var(--ink-faint);
+  }
+
+  .author__urls-label {
+    min-width: 0;
+    word-break: break-word;
+  }
+
+  /* email addresses are long; shrink them just enough to sit on one line */
+  a[href^="mailto:"] {
+    font-size: 0.75rem;
+  }
+
+  a:hover i,
+  a:hover .ai {
+    color: var(--accent);
+  }
+}
+
+.author__url--alt a {
+  color: var(--ink-faint);
+  font-size: 0.78rem;
+}
+
+.sidebar {
+  p, li {
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
+  @media (min-width: 57.8125em) {
+    font-size: inherit;
+  }
+}
+
+/*
+   Pills
+   ========================================================================== */
+
+.pill {
+  display: inline-block;
+  padding: 0.14em 0.62em 0.2em;
+  border: 1px solid var(--rule-strong);
+  border-radius: 100px;
+  background-color: var(--paper-2);
+  color: var(--ink-soft);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  letter-spacing: 0.015em;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
+.pill--award {
+  border-color: var(--accent-line);
+  background-color: var(--accent-wash);
+  color: var(--accent);
+}
+
+.pill--soft {
+  border-style: dashed;
+  color: var(--ink-faint);
+}
+
+/*
+   Publication cards
+   ========================================================================== */
+
+.pub-list {
+  margin-top: 1.6rem;
+}
+
+.pub {
+  position: relative;
+  margin: 0 0 0.3rem;
+  padding: 0.85rem 0 0.95rem 1.15rem;
+  border-left: 2px solid var(--rule);
+  -webkit-transition: border-color 0.18s ease, background-color 0.18s ease;
+          transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+
+.pub:hover {
+  border-left-color: var(--accent);
+  background-color: var(--paper-2);
+}
+
+.pub__title {
+  font-family: $display;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0 0 0.4rem;
+
+  a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+}
+
+.pub__authors {
+  margin: 0 0 0.5rem;
+  color: var(--ink-soft);
+  font-size: 0.87rem;
+  line-height: 1.55;
+
+  strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+}
+
+.pub__meta {
+  margin: 0 0 0.4rem;
+  display: block;
+
+  .pill {
+    margin-right: 0.35rem;
+  }
+}
+
+.pub__year {
+  color: var(--ink-faint);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  margin-right: 0.35rem;
+}
+
+.pub__citation {
+  margin: 0 0 0.5rem;
+  color: var(--ink-faint);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+.pub__links {
+  margin: 0;
+  font-size: 0.82rem;
+}
+
+.pub__link {
+  display: inline-block;
+  margin-right: 1rem;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-line);
+}
+
+.pub__link:hover {
+  color: var(--accent-hover);
+  border-bottom-color: var(--accent-hover);
+  text-decoration: none;
+}
+
+/* individual publication pages reuse the same blocks under the page header */
+.page__inner-wrap > header {
+  .pub__authors,
+  .pub__meta,
+  .pub__citation,
+  .pub__links {
+    max-width: 40rem;
+  }
+}
+
+/* separate the citation header from the abstract. :has() scopes this to
+   publication pages; where it is unsupported the page simply keeps the
+   default spacing. */
+.page__inner-wrap > header:has(.pub__meta) {
+  max-width: 40rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rule);
+
+  .pub__links {
+    margin-bottom: 0;
+  }
+}
+
+/*
+   Talks timeline
+   ========================================================================== */
+
+.timeline {
+  list-style: none;
+  margin: 1.6rem 0 0;
+  padding: 0;
+}
+
+.timeline__item {
+  position: relative;
+  margin: 0;
+  padding: 0 0 1.55rem 0;
+  list-style: none;
+
+  @media (min-width: 37.5em) {
+    padding-left: 6.1rem;
+  }
+}
+
+/* spine + node, only once there is a left gutter to draw them in */
+@media (min-width: 37.5em) {
+  .timeline__item:before {
+    content: "";
+    position: absolute;
+    left: 4.6rem;
+    top: 0.62rem;
+    bottom: 0;
+    width: 1px;
+    background-color: var(--rule);
+  }
+
+  .timeline__item:last-child:before {
+    display: none;
+  }
+
+  .timeline__item:after {
+    content: "";
+    position: absolute;
+    left: 4.4rem;
+    top: 0.45rem;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--accent);
+  }
+
+  .timeline__date {
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+    width: 3.7rem;
+    text-align: right;
+  }
+}
+
+.timeline__date {
+  color: var(--ink-faint);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  margin-bottom: 0.15rem;
+}
+
+.timeline__title {
+  font-family: $display;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 0 0 0.25rem;
+  color: var(--ink);
+}
+
+.timeline__venue {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+.timeline__place {
+  color: var(--ink-faint);
+}
+
+.timeline__links {
+  margin: 0.35rem 0 0;
+  font-size: 0.82rem;
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-line);
+  }
+
+  a:hover {
+    border-bottom-color: var(--accent-hover);
+  }
+}
+
+/*
+   Awards
+   ========================================================================== */
+
+.awards {
+  list-style: none;
+  margin: 1.4rem 0 0;
+  padding: 0;
+}
+
+.awards__item {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: baseline;
+          align-items: baseline;
+  -webkit-box-pack: justify;
+          justify-content: space-between;
+  margin: 0;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--rule);
+  list-style: none;
+}
+
+.awards__item:last-child {
+  border-bottom: 0;
+}
+
+.awards__name {
+  color: var(--ink);
+  font-size: 0.94rem;
+  line-height: 1.5;
+  padding-right: 1rem;
+}
+
+.awards__year {
+  color: var(--ink-faint);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  -webkit-font-feature-settings: "tnum";
+          font-feature-settings: "tnum";
+}
+
+/*
+   Figures. Markdown of the form
+       ![alt](src)
+       *caption*
+   compiles to <p><img> <em>caption</em></p>, so style that shape.
+   ========================================================================== */
+
+.page__content p > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+.page__content p > img + em {
+  display: block;
+  color: var(--ink-faint);
+  font-family: $display;
+  font-size: 0.82rem;
+  font-style: italic;
+  line-height: 1.55;
+  text-align: center;
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+.page__content a:hover img {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  border-color: var(--rule-strong);
+}
+
+figcaption {
+  color: var(--ink-faint);
+  font-family: $display;
+}
+
+/*
+   Buttons
+   ========================================================================== */
+
+/* !important is required here: the theme's .btn sets `color: #fff !important`
+   and `border: 0 !important`, and its own .btn--inverse modifier overrides them
+   the same way. */
+.btn--accent {
+  background-color: var(--accent);
+  color: #fff !important;
+  border: 1px solid var(--accent) !important;
+  font-family: inherit;
+  font-weight: 600;
+}
+
+.btn--accent:hover {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover) !important;
+  color: #fff !important;
+}
+
+.btn--ghost {
+  background-color: transparent;
+  color: var(--accent) !important;
+  border: 1px solid var(--accent-line) !important;
+  font-family: inherit;
+  font-weight: 600;
+}
+
+.btn--ghost:hover {
+  background-color: var(--accent-wash);
+  color: var(--accent-hover) !important;
+  border-color: var(--accent) !important;
+}
+
+/*
+   CV page
+   ========================================================================== */
+
+.cv__actions {
+  margin: 0 0 1.3rem;
+
+  .btn {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+.cv__embed {
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background-color: var(--paper-2);
+  overflow: hidden;
+
+  object {
+    display: block;
+    width: 100%;
+    height: 60vh;
+    border: 0;
+  }
+
+  @media (min-width: 48em) {
+    object {
+      height: 85vh;
+    }
+  }
+}
+
+.cv__fallback {
+  margin: 0;
+  padding: 2rem 1.25rem;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+/*
+   Footer
+   ========================================================================== */
+
+.page__footer {
+  background-color: var(--paper-2);
+  border-top: 1px solid var(--rule);
+  color: var(--ink-faint);
+
+  a {
+    color: var(--ink-soft);
+  }
+
+  a:hover {
+    color: var(--accent);
+  }
+}
+
+.page__footer-copyright {
+  font-family: inherit;
+  font-size: 0.76rem;
+  line-height: 1.6;
+}
+
+.page__footer-follow {
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    font-size: 0.78rem;
+  }
+
+  .social-icons a {
+    color: var(--ink-soft);
+  }
+}
+
+/*
+   Theme spots that hardcode a light background, patched for dark mode
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  .btn--inverse {
+    background-color: var(--paper-2);
+    color: var(--ink);
+    border-color: var(--rule);
+  }
+
+  p > code,
+  a > code,
+  li > code,
+  figcaption > code,
+  td > code,
+  pre,
+  .highlight {
+    background-color: var(--paper-2);
+    border-color: var(--rule);
+    color: var(--ink);
+  }
+
+  .notice,
+  .notice--info,
+  .notice--warning,
+  .notice--success,
+  .notice--danger,
+  .notice--primary {
+    background-color: var(--paper-2);
+    color: var(--ink-soft);
+  }
+
+  table {
+    color: var(--ink);
+  }
+
+  th {
+    background-color: var(--paper-2);
+    border-color: var(--rule);
+  }
+
+  td {
+    border-color: var(--rule);
+  }
+
+  .page__taxonomy-item {
+    border-color: var(--rule);
+    color: var(--ink-soft);
+  }
+
+  /* research-page figures are line art on white; keep a white mat behind them
+     rather than inverting the images */
+  .page__content p > img {
+    background-color: #fff;
+  }
+
+  .MathJax,
+  .MathJax_Display,
+  .MathJax_CHTML {
+    color: var(--ink);
+  }
+}
+
+/*
+   Long display equations must not blow out the layout on phones
+   ========================================================================== */
+
+/* MathJax 2's CHTML output — which is what head/custom.html loads via
+   config=TeX-MML-AM_CHTML — puts display equations in .MJXc-display, not the
+   .MathJax_Display used by the HTML-CSS output. Cover both, plus MathJax 3's
+   mjx-container, so a long equation scrolls inside its own box instead of
+   widening the page. */
+.MJXc-display,
+.MathJax_Display,
+.MathJax_SVG_Display,
+mjx-container[display="true"] {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
+/*
+   Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *:before,
+  *:after {
+    -webkit-animation-duration: 0.001ms !important;
+            animation-duration: 0.001ms !important;
+    -webkit-animation-delay: 0.001ms !important;
+            animation-delay: 0.001ms !important;
+    -webkit-animation-iteration-count: 1 !important;
+            animation-iteration-count: 1 !important;
+    -webkit-transition-duration: 0.001ms !important;
+            transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+   Print
+   ========================================================================== */
+
+@media print {
+  .masthead,
+  .page__footer,
+  .page__share,
+  .author__urls-wrapper,
+  .cv__actions,
+  .cv__embed {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #000;
+    padding-bottom: 0;
+  }
+
+  .page {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .pub {
+    border-left: 0;
+    padding-left: 0;
+    page-break-inside: avoid;
+  }
+
+  .timeline__item {
+    padding-left: 0;
+    page-break-inside: avoid;
+  }
+
+  .timeline__item:before,
+  .timeline__item:after {
+    display: none;
+  }
+
+  .timeline__date {
+    position: static;
+    width: auto;
+    text-align: left;
+  }
+
+  a {
+    color: #000;
+    text-decoration: underline;
+  }
+}

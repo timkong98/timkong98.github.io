@@ -10,7 +10,7 @@ locale                   : "en-US"
 title                    : "Tianyu Kong 孔天煜"
 title_separator          : "-"
 name                     : &name "Tianyu Kong"
-description              : &description "Graduate Student @ UMN Applied Math"
+description              : &description "William H. Kruskal Instructor in Computational and Applied Mathematics, University of Chicago"
 url                      : https://timkong98.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "timkong98.github.io"
@@ -76,7 +76,7 @@ social:
 
 # Analytics
 analytics:
-  provider               :  "google-universal" # false (default), "google", "google-universal", "custom"
+  provider               : false # false (default), "google", "google-universal", "custom"
   google:
     tracking_id          :
 
@@ -85,12 +85,13 @@ analytics:
 author:
   name             : "Tianyu Kong"
   avatar           : "tk_profile_square.jpg"
-  bio              : "Graduate Student @ UMN Applied Math"
-  location         : "320 Vincent Hall"
-  employer         : 
-  pubmed           : 
+  bio              : "William H. Kruskal Instructor"
+  location         : "Chicago, IL"
+  employer         : "University of Chicago"
+  pubmed           :
   googlescholar    : "https://scholar.google.com/citations?user=f9RLuJgAAAAJ&hl=en"
-  email            : "kong0226@umn.edu"
+  email            : "tianyuk@uchicago.edu"
+  email_alt        : "kong0226@umn.edu"
   researchgate     :  # example: "https://www.researchgate.net/profile/yourprofile"
   uri              :
   bitbucket        :

@@ -1,0 +1,69 @@
+# Talks and poster presentations, newest first.
+#
+# Each entry: title, venue, location, date (YYYY.MM as shown on the page),
+# and optionally `url` for slides/poster PDFs and `upcoming: true` while the
+# date is still in the future.
+
+talks:
+  - title: "Continuum Model for Relaxed Moiré Bilayer Graphene"
+    venue: "SIAM Conference on Analysis of Partial Differential Equations"
+    location: "Pittsburgh, PA"
+    date: "2025.11"
+
+  - title: "Multiscale Modeling of Electron Dynamics in Twisted Bilayer Graphene"
+    venue: "University of Minnesota Duluth Math Colloquium"
+    location: "Duluth, MN"
+    date: "2025.10"
+
+  - title: "Multiscale Modeling of Electron Dynamics in Twisted Bilayer Graphene"
+    venue: "UMN Seminar of Mathematical Applications &amp; Computations"
+    location: "Minneapolis, MN"
+    date: "2025.10"
+
+  - title: "Multiscale Modeling in Twisted Bilayer Graphene with Strain and Relaxation"
+    venue: "SIAM Great Lakes Section Annual Meeting"
+    location: "Chicago, IL"
+    date: "2025.09"
+
+  - title: "Modeling Electron Interactions in Twisted Bilayer Graphene"
+    venue: "UMN Quantum Math Seminar"
+    location: "Minneapolis, MN"
+    date: "2025.03"
+
+  - title: "&ldquo;Magic&rdquo; in Moiré Materials &ndash; An Applied Mathematics Perspective"
+    venue: "UMN Seminar of Mathematical Applications &amp; Computations"
+    location: "Minneapolis, MN"
+    date: "2025.03"
+
+  - title: "Modeling of Electronic Dynamics in Twisted Bilayer Graphene"
+    venue: "International Workshop on 2D and Moiré Materials"
+    location: "Roscoff, France"
+    date: "2024.07"
+
+  - title: "Modeling of Electronic Dynamics in Twisted Bilayer Graphene"
+    venue: "SIAM Conference on Materials Science (MS24)"
+    location: "Pittsburgh, PA"
+    date: "2024.05"
+
+  - title: "Modeling of Electronic Dynamics in Twisted Bilayer Graphene"
+    venue: "Brin Mathematics Research Center Workshop"
+    location: "College Park, MD"
+    date: "2024.03"
+
+posters:
+  - title: "Continuum model and interactions for relaxed twisted bilayer graphene"
+    venue: "IMSI: Mathematical Aspects of 2D Quantum Materials and Meta-materials"
+    location: "Chicago, IL"
+    date: "2026.06"
+
+  - title: "Interacting Twisted Bilayer Graphene with Systematic Modeling of Structural Relaxation"
+    venue: "Simons Foundation Moiré Materials Magic Workshop"
+    location: "New York, NY"
+    date: "2025.05"
+    url: "/files/Poster_2.pdf"
+
+  - title: "A Comparison of Minimum Action Methods for Computing Noise-induced Transitions of the Lorenz System"
+    venue: "SIAM Conference on Applications of Dynamical Systems (DS21)"
+    location: "Remote"
+    date: "2021.05"
+    url: "/files/Poster.pdf"

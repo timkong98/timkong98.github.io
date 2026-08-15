@@ -9,6 +9,23 @@ redirect_from:
 
 {% include base_path %}
 
-{% capture written_label %}'None'{% endcapture %}
+<p class="cv__actions">
+  <a class="btn btn--accent" href="{{ base_path }}/files/Tianyu_Kong_CV.pdf" download>Download CV (PDF)</a>
+  <a class="btn btn--ghost" href="{{ base_path }}/files/Tianyu_Kong_CV.pdf" target="_blank" rel="noopener">Open in new tab</a>
+</p>
 
-<embed src="https://timkong98.github.io/files/Tianyu_Kong_CV.pdf" type="application/pdf" width="100%" />
+{%- comment -%}
+  The fitvidsignore class is required. assets/js/main.min.js runs
+  $("#main").fitVids(), whose selector list includes every <object> and <embed>.
+  For a PDF it computes an aspect ratio of NaN, sets padding-top: NaN% on an
+  injected wrapper and forces the object to height: 100%, collapsing the embed
+  to zero height. FitVids skips anything inside a .fitvidsignore ancestor.
+{%- endcomment -%}
+<div class="cv__embed fitvidsignore">
+  <object class="fitvidsignore" data="{{ base_path }}/files/Tianyu_Kong_CV.pdf" type="application/pdf">
+    <p class="cv__fallback">
+      Your browser can&rsquo;t display PDFs inline.
+      <a href="{{ base_path }}/files/Tianyu_Kong_CV.pdf">Download the CV instead</a>.
+    </p>
+  </object>
+</div>

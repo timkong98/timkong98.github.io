@@ -2,69 +2,34 @@
 title: "Talks and Presentations"
 permalink: /talks/
 author_profile: true
----	
+---
 
-Talks
-------
+<h2 class="section-head" id="talks">Invited and Contributed Talks</h2>
 
+<ol class="timeline">
+{% for t in site.data.talks.talks %}
+  <li class="timeline__item">
+    <div class="timeline__date">{{ t.date }}</div>
+    <div class="timeline__body">
+      <h3 class="timeline__title">{{ t.title }}{% if t.upcoming %} <span class="pill pill--soft">upcoming</span>{% endif %}</h3>
+      <p class="timeline__venue">{{ t.venue }}{% if t.location %} &middot; <span class="timeline__place">{{ t.location }}</span>{% endif %}</p>
+      {% if t.url %}<p class="timeline__links"><a href="{{ t.url }}">Slides</a></p>{% endif %}
+    </div>
+  </li>
+{% endfor %}
+</ol>
 
-**[upcoming] Continuum Model for Relaxed Moire Bilayer Graphene**
+<h2 class="section-head" id="posters">Poster Presentations</h2>
 
-*2025.11* SIAM Conference on Analysis of Partial Differential Equations, Pittsburgh, PA
-
-
-**Multiscale Modeling of Electron Dynamics in Twisted Bilayer Graphene**
-
-*2025.10* University of Minnesota Duluth Math Colloquium, Duluth MN
-
-
-**Multi-scale Modeling of Electron Dynamics in Twisted Bilayer Graphene**
-
-*2025.10* UMN Seminar of Mathematical Applications & Computations, Minneapolis MN
-
-
-**Multiscale Modeling in Twisted Bilayer Graphene with Strain and Relaxation**
-
-*2025.09* SIAM Great Lakes Section Annual Meeting, Chicago IL
-
-
-**Modeling Electron Interactions in Twisted Bilayer Graphene**
-
-*2025.03* UMN Quantum Math Seminar, Minneapolis MN
-
-
-**“Magic” in Moir´e Materials – An Applied Mathematics Perspective**
-
-*2025.03* UMN Seminar of Mathematical Applications & Computations, Minneapolis MN
-
-
-**Modeling of Electronic Dynamics in Twisted Bilayer Graphene**
-
-*2024.07* International workshop on 2D and moir´e materials, Roscoff France
-
-
-**Modeling of Electronic Dynamics in Twisted Bilayer Graphene**
-
-*2024.05* SIAM Conference on Materials Science (MS24), Pittsburgh, PA
-
-
-**Modeling of Electronic Dynamics in Twisted Bilayer Graphene**
-
-*2024.03* Brin Mathematics Research Center Workshop, College Park, MD
-
-
-Poster Presentations
-------
-**Interacting Twisted Bilayer Graphene with Systematic Modeling of Structural Relaxation**
-
-*2025.05* Simons Foundation Moir´e Materials Magic Workshop, New York, NY
-
-[Poster](https://timkong98.github.io/files/Poster_2.pdf)
-
-
-**A Comparison of Minimum Action Methods for Computing Noise-induced Transitions of the Lorenz System**
-
-*2021.05* SIAM Conference on Applications of Dynamical Systems (DS21), Remote
-
-[Poster](https://timkong98.github.io/files/Poster.pdf)
-
+<ol class="timeline">
+{% for p in site.data.talks.posters %}
+  <li class="timeline__item">
+    <div class="timeline__date">{{ p.date }}</div>
+    <div class="timeline__body">
+      <h3 class="timeline__title">{{ p.title }}{% if p.upcoming %} <span class="pill pill--soft">upcoming</span>{% endif %}</h3>
+      <p class="timeline__venue">{{ p.venue }}{% if p.location %} &middot; <span class="timeline__place">{{ p.location }}</span>{% endif %}</p>
+      {% if p.url %}<p class="timeline__links"><a href="{{ p.url }}">Poster (PDF)</a></p>{% endif %}
+    </div>
+  </li>
+{% endfor %}
+</ol>
