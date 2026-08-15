@@ -10,7 +10,13 @@
     try {
       var t = window.localStorage.getItem('theme');
       if (t === 'light' || t === 'dark') {
-        document.documentElement.setAttribute('data-theme', t);
+        var r = document.documentElement;
+        r.setAttribute('data-theme', t);
+        /* Inline, so the UA picks the right canvas colour before the
+           stylesheet is parsed. Without this a stored dark theme still shows a
+           white flash when the OS itself is in light mode. */
+        r.style.colorScheme = t;
+        r.style.backgroundColor = (t === 'dark') ? '#161514' : '#fdfbf8';
       }
     } catch (e) { /* private mode / storage disabled */ }
   })();

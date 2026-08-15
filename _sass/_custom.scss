@@ -95,12 +95,33 @@ $display: $sans-serif;
    Base
    ========================================================================== */
 
+/* Set the ground on <html> as well as <body>. The canvas colour during a
+   navigation comes from the root element, so leaving it unset gives a white
+   flash between pages in dark mode. */
+html {
+  background-color: var(--paper);
+}
+
 body {
   background-color: var(--paper);
   color: var(--ink);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* The theme fades the masthead in at 0.15s, #main at 0.35s and the footer at
+   0.45s (`animation: intro` in _animations.scss). That leaves a third of a
+   second of bare background on every page load, which reads as a flash --
+   especially in dark mode -- and makes navigation feel slow. Paint immediately
+   instead. */
+.masthead,
+#main,
+.page__footer,
+.page__hero,
+.page__hero--overlay {
+  -webkit-animation: none;
+          animation: none;
 }
 
 /*
@@ -133,12 +154,38 @@ $sidebar-gap: 36px;
     float: left;
   }
 
-  .page {
+  /* .archive is the content wrapper for `layout: archive` (Publications, CV);
+     .page is the one for `layout: single`/`talk`. Both must be listed, or the
+     one left on susy's 83% width overflows the row next to a 240px sidebar and
+     wraps underneath it. */
+  .page,
+  .archive {
     width: calc(100% - #{$sidebar-w + $sidebar-gap});
     margin-right: 0;
+    margin-left: 0;
     padding-left: 0;
     padding-right: 0;
     float: right;
+  }
+}
+
+/* archive-layout pages have no .page__content wrapper, so the measure caps
+   applied there need repeating for direct children of .archive */
+.archive {
+  > p,
+  > ul,
+  > ol,
+  > h2,
+  > h3,
+  > h4 {
+    max-width: 34rem;
+  }
+
+  > .pub-list,
+  > .timeline,
+  > .awards,
+  > .section-head {
+    max-width: 40rem;
   }
 }
 

@@ -35,6 +35,13 @@
     btn.setAttribute('aria-label', text);
     btn.setAttribute('title', text);
 
+    /* The head script sets colorScheme and backgroundColor inline so the canvas
+       is right before the stylesheet parses. By the time this file runs the
+       stylesheet is applied, so drop them and let the CSS tokens be the single
+       source of truth -- otherwise they go stale the moment the user toggles. */
+    root.style.colorScheme = '';
+    root.style.backgroundColor = '';
+
     /* Once the user has chosen explicitly, the two media-scoped theme-color
        meta tags can disagree with the page, so collapse them into one. */
     if (root.getAttribute('data-theme')) {
