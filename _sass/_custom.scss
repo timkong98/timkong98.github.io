@@ -80,14 +80,16 @@ html[data-theme="dark"] {
 }
 
 /*
-   Webfont stacks. Source Serif 4 is loaded in _includes/head/custom.html with
-   display=swap; the fallbacks carry the page if Google Fonts is unreachable.
-   The CJK faces are listed because the site title contains Chinese characters
-   that Source Serif 4 does not cover.
+   Type. Sans throughout, using the theme's system stack ($sans-serif from
+   _variables.scss), so there is no webfont request at all and the CJK in the
+   site title falls back to the platform's own sans (PingFang SC, Microsoft
+   YaHei, Noto Sans CJK) rather than a mismatched face.
+
+   Headings lean on weight and tight tracking for presence instead of a
+   contrasting family.
    ========================================================================== */
 
-$display: "Source Serif 4", "Iowan Old Style", "Palatino Linotype", Palatino,
-          Georgia, "Songti SC", "Noto Serif SC", serif;
+$display: $sans-serif;
 
 /*
    Base
@@ -144,14 +146,15 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $display;
   color: var(--ink);
   font-weight: 600;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.011em;
   line-height: 1.25;
 }
 
 h1, .page__title {
   font-size: 2rem;
+  font-weight: 700;
   line-height: 1.15;
-  letter-spacing: -0.018em;
+  letter-spacing: -0.024em;
   margin-bottom: 1.1rem;
 }
 
@@ -1002,6 +1005,13 @@ html[data-theme="light"] .theme-toggle__to-light {
 
 figcaption {
   color: var(--ink-faint);
+  font-family: $display;
+}
+
+/* the vendored magnific-popup lightbox chrome is the last serif left in the
+   bundle */
+.mfp-counter,
+.mfp-close {
   font-family: $display;
 }
 
