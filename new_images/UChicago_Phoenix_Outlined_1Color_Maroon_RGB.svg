@@ -3,9 +3,9 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 576 504" style="enable-background:new 0 0 576 504;" xml:space="preserve">
 <style type="text/css">
-	.st0{fill:#000000;}
-	.st1{fill:#000000;}
-	.st2{fill:#000000;}
+	.st0{fill:#7F1416;}
+	.st1{fill:#737474;}
+	.st2{fill:#FFFFFF;}
 	.st3{display:none;}
 	.st4{display:inline;}
 </style>
@@ -251,6 +251,13 @@
 				c5.84-4.27,11-9.15,14.97-12.91l1.08-1.04c1.28,5.22,3.7,9.09,5.77,12.37c0.89,1.41,1.72,2.75,2.37,4.02
 				c1.53,3.13,1.37,4.35,1.33,4.51C296.83,443.36,296.1,443.78,294.04,443.78"/>
 		</g>
+	</g>
+</g>
+<g id="TMs" class="st3">
+	<g class="st4">
+		<path class="st0" d="M406.57,401.9h-2.48v-11.72h-4.43v-2.28H411v2.28h-4.43V401.9z"/>
+		<path class="st0" d="M420.49,398.45h-0.08l-4.38-6.56v10h-2.44v-14h2.62l4.25,6.62l4.25-6.62h2.62v14h-2.44v-10.04L420.49,398.45z
+			"/>
 	</g>
 </g>
 </svg>
