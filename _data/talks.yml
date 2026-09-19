@@ -5,6 +5,16 @@
 # date is still in the future.
 
 talks:
+  - title: "Continuum Model for Twisted Bilayer Graphene with Strain and Relaxation,"
+    venue: "NSF RTG Conference: Materials and Optimization"
+    location: "Salt Lake City, UT"
+    date: "2026.10"
+
+  - title: "Multiscale Modeling of Relaxation and Electron Dynamics for Twisted Bilayer Graphene"
+    venue: "SIAM Great Lakes Section Annual Meeting"
+    location: "West Lafayette, IN"
+    date: "2026.09"
+
   - title: "Continuum Model for Relaxed Moiré Bilayer Graphene"
     venue: "SIAM Conference on Analysis of Partial Differential Equations"
     location: "Pittsburgh, PA"
