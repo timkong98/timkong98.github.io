@@ -51,8 +51,19 @@ function updateNav() {
   // Keep counter updated
   $btn.attr("count", breaks.length);
 
-  // Recur if the visible list is still overflowing the nav
+  // Recur if the visible list is still overflowing the nav -- but only while
+  // there is still a link to move. When the nav is narrower than the button
+  // (a very small phone, or a page laid out in a hidden tab) availableSpace
+  // goes negative, an empty list still "overflows", and without this check
+  // the recursion never ends.
   if($vlinks.width() > availableSpace) {
+    if($vlinks.children().length) {
+      updateNav();
+    }
+
+  // Likewise keep bringing links back while there is room, so one big jump in
+  // width (rotating a tablet) restores them all rather than one per event.
+  } else if(breaks.length && availableSpace > breaks[breaks.length-1]) {
     updateNav();
   }
 

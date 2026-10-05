@@ -1,0 +1,55 @@
+# Courses for the Teaching page, grouped by institution, newest first.
+#
+# Each course: term, code, title, role ("Instructor", "Teaching Assistant",
+# "Grader", ...), and optionally `url` for a course website. Instructor
+# entries are highlighted on the page.
+
+- institution: "University of Chicago"
+  courses:
+    - term: "Fall 2026"
+      code: "CAAM 37830"
+      title: "Scientific Computing with Python"
+      role: "Instructor"
+      url: "https://caam37830-sci-comp.github.io/"
+
+    - term: "Fall 2019 – Winter 2020"
+      code: "MATH 20000–20100"
+      title: "Mathematical Methods for Physical Sciences 1–2"
+      role: "Grader"
+
+    - term: "Fall 2018 – Spring 2019"
+      code: "MATH 16100–16300"
+      title: "Honors Calculus 1–3"
+      role: "Grader"
+
+- institution: "University of Minnesota Twin Cities"
+  courses:
+    - term: "Spring 2024"
+      code: "MATH 1572H"
+      title: "Honors Calculus 2"
+      role: "Teaching Assistant"
+
+    - term: "Spring 2024"
+      code: "MATH 8802"
+      title: "Functional Analysis"
+      role: "Grader"
+
+    - term: "Spring 2024"
+      code: "MATH 8402"
+      title: "Mathematical Modeling and Methods of Applied Mathematics 2"
+      role: "Grader"
+
+    - term: "Fall 2023"
+      code: "MATH 1372"
+      title: "Calculus 2 for College of Science & Engineering"
+      role: "Teaching Assistant"
+
+    - term: "Fall 2022"
+      code: "MATH 8401"
+      title: "Mathematical Modeling and Methods of Applied Mathematics 1"
+      role: "Grader"
+
+    - term: "Fall 2021, Fall 2022"
+      code: "MATH 1371"
+      title: "Calculus 1 for College of Science & Engineering"
+      role: "Teaching Assistant"

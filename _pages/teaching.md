@@ -4,38 +4,24 @@ permalink: /teaching/
 author_profile: true
 ---
 
-University of Chicago
-------
-**Instructor**
+{%- comment -%}
+  Courses live in _data/teaching.yml; add new ones there. Terms are made to
+  wrap only at " – " or ", " so "Winter 2020" never splits across lines in the
+  narrow term column.
+{%- endcomment -%}
+{% for school in site.data.teaching %}
+<h2 class="section-head">{{ school.institution }}</h2>
 
-Fall 2026 CAAM 37830 Scientific Computing with Python [course website](https://caam37830-sci-comp.github.io/)
-
-**Grader**
-
-Fall 2019 - Winter 2020 MATH 20000-20100 Mathematical Methods for Physical Sciences 1-2
-
-Fall 2018 - Spring 2019 MATH 16100-16300 Honors Calculus 1-3
-
-
-
-
-University of Minnesota Twin Cities
-------
-**Teaching Assistant**
-
-Spring 2024 MATH 1572H Honors Calculus 2
-
-Fall 2023 MATH 1372 Calculus 2 for College of Science & Engineering
-
-Fall 2022 MATH 1371 Calculus 1 for College of Science & Engineering
-
-Fall 2021 MATH 1371 Calculus 1 for College of Science & Engineering
-
-**Grader**
-
-Spring 2024 MATH 8802 Functional Analysis 
-
-Spring 2024 MATH 8402 Mathematical Modeling and Methods of Applied Mathematics 2
-
-Fall 2022 MATH 8401 Mathematical Modeling and Methods of Applied Mathematics 1
-
+<ol class="courses">
+{% for c in school.courses %}
+  <li class="course{% if c.role == 'Instructor' %} course--lead{% endif %}">
+    <div class="course__term">{{ c.term | replace: ' ', '&nbsp;' | replace: '&nbsp;–&nbsp;', ' – ' | replace: ',&nbsp;', ', ' }}</div>
+    <div class="course__body">
+      <h3 class="course__title">{{ c.title }}</h3>
+      <p class="course__meta"><span class="course__code">{{ c.code }}</span><span class="course__role">{{ c.role }}</span></p>
+      {% if c.url %}<p class="course__links"><a class="pub__link" href="{{ c.url }}">Course website</a></p>{% endif %}
+    </div>
+  </li>
+{% endfor %}
+</ol>
+{% endfor %}

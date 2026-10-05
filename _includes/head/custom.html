@@ -2,6 +2,10 @@
 
 <!-- start custom head snippets -->
 
+<!-- Lets the browser paint its blank pre-stylesheet canvas dark when the OS is
+     in dark mode, instead of white, on full page loads. -->
+<meta name="color-scheme" content="light dark">
+
 <!-- Apply a stored light/dark choice before first paint, so there is no flash
      of the wrong theme. Must stay ahead of the body; the toggle that writes
      this value lives in _includes/masthead.html. -->

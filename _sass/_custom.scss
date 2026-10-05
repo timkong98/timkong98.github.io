@@ -211,10 +211,20 @@ body {
 }
 
 /* Below 400px the bar has to hold the name, the overflow button and the theme
-   toggle; drop the name a size so the CJK never clips. */
+   toggle; drop the name a size and tighten the gutters so all three fit down
+   to a 320px phone. */
 @media (max-width: 24.99em) {
+  .masthead__inner-wrap {
+    padding: 0 1rem;
+  }
+
   .masthead__title {
+    margin-right: 0.5rem;
     font-size: 1.05rem;
+  }
+
+  .theme-toggle {
+    margin-left: 0.5rem;
   }
 }
 
@@ -238,7 +248,8 @@ body {
   display: flex;
   -webkit-box-pack: end;
           justify-content: flex-end;
-  min-width: 0;
+  min-width: 2.3rem; /* always room for the overflow button, so it can never
+                        slide over the name */
   background: transparent;
 
   .visible-links {
@@ -636,6 +647,13 @@ h1, .page__title {
   line-height: 1.2;
 }
 
+/* a section heading straight under the page title (Teaching, Talks) would
+   otherwise stack its top margin on the title's */
+.page__content > .section-head:first-child,
+.page__content > h2:first-child {
+  margin-top: 0.5rem;
+}
+
 /*
    Links: underlined and in the accent colour everywhere in the content, as on
    a printed page; the bar and buttons opt out below.
@@ -660,6 +678,12 @@ a:focus {
 .masthead a,
 .masthead a:hover {
   text-decoration: none;
+}
+
+/* page-swap.js moves focus to the new page title so screen readers announce
+   it; the title is not a control, so it needs no focus ring */
+h1[tabindex="-1"]:focus {
+  outline: 0;
 }
 
 /* visible keyboard focus everywhere; the theme only sets a dotted outline */
@@ -698,6 +722,11 @@ select:focus-visible,
     width: 100%;
     max-width: none;
     height: auto;
+    /* reserve the square before the photo loads, so the name and links below
+       don't jump down when it arrives */
+    aspect-ratio: 1;
+    -o-object-fit: cover;
+       object-fit: cover;
     border: 0;
     border-radius: 0;
     padding: 0;
@@ -1027,10 +1056,12 @@ select:focus-visible,
   font-size: 0.9375rem;
 }
 
-/* Outlined buttons for Abstract / Publisher / arXiv. Qualified with
-   .pub__links a because the theme underlines every link in .archive and
-   .page__content at (0,1,1), and their :hover at (0,2,1). */
-.pub__links a.pub__link {
+/* Outlined buttons for Abstract / Publisher / arXiv, and the course website
+   link on the Teaching page. Qualified with a parent because the theme
+   underlines every link in .archive and .page__content at (0,1,1), and their
+   :hover at (0,2,1). */
+.pub__links a.pub__link,
+.course__links a.pub__link {
   display: inline-block;
   margin: 0 0.5rem 0.5rem 0;
   padding: 0.3rem 0.75rem;
@@ -1045,12 +1076,15 @@ select:focus-visible,
           transition: border-color 0.15s ease, color 0.15s ease;
 }
 
-.pub__links a.pub__link:visited {
+.pub__links a.pub__link:visited,
+.course__links a.pub__link:visited {
   color: var(--ink);
 }
 
 .pub__links a.pub__link:hover,
-.pub__links a.pub__link:focus {
+.pub__links a.pub__link:focus,
+.course__links a.pub__link:hover,
+.course__links a.pub__link:focus {
   border-color: var(--accent);
   color: var(--accent);
   text-decoration: none;
@@ -1214,6 +1248,101 @@ select:focus-visible,
   white-space: nowrap;
   -webkit-font-feature-settings: "tnum";
           font-feature-settings: "tnum";
+}
+
+/*
+   Teaching: one hairline row per course, term in a left column (stacked above
+   the title on phones). Titles and meta lines are qualified with
+   .page__content to beat its h3 / p sizes.
+   ========================================================================== */
+
+.courses {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+
+.course {
+  margin: 0;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--rule);
+  list-style: none;
+
+  @media (min-width: 37.5em) {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: baseline;
+            align-items: baseline;
+  }
+}
+
+.course:last-child {
+  border-bottom: 0;
+}
+
+.course__term {
+  margin-bottom: 0.15rem;
+  color: var(--ink-faint);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  -webkit-font-feature-settings: "tnum";
+          font-feature-settings: "tnum";
+
+  @media (min-width: 37.5em) {
+    -webkit-box-flex: 0;
+            flex: 0 0 8.5rem;
+    margin: 0 1.25rem 0 0;
+  }
+}
+
+.course__body {
+  -webkit-box-flex: 1;
+          flex: 1 1 auto;
+  min-width: 0;
+}
+
+.page__content .course__title,
+.course__title {
+  margin: 0;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-wrap: pretty; /* no lone "2" on the last line, where supported */
+}
+
+.page__content .course__meta,
+.course__meta {
+  margin: 0.1rem 0 0;
+  color: var(--ink-faint);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.course__code {
+  -webkit-font-feature-settings: "tnum";
+          font-feature-settings: "tnum";
+}
+
+.course__code + .course__role:before {
+  content: "\00b7";
+  margin: 0 0.4em;
+}
+
+.course--lead .course__role {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.page__content .course__links,
+.course__links {
+  margin: 0.6rem 0 0;
+}
+
+.course__links a.pub__link {
+  margin-bottom: 0;
 }
 
 /*
