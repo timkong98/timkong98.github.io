@@ -1,8 +1,14 @@
 /* ==========================================================================
-   CUSTOM — refined academic layer
+   CUSTOM — banner-and-profile academic layout
    --------------------------------------------------------------------------
    Imported LAST from assets/css/main.scss so it wins over the theme without
-   editing Minimal Mistakes' own partials.
+   editing Minimal Mistakes' own partials (the one exception is the font stack,
+   $sans-serif in _variables.scss).
+
+   The look: a light grey top bar with the name on the left and page links on
+   the right, a full-width banner image, a square framed portrait that rides up
+   over the banner's bottom edge, a contact sidebar beside it, large bold page
+   titles, and Open Sans throughout.
 
    Constraints this file respects:
    - Compiled by sassc/libsass on GitHub Pages: no @use/@forward, no sass
@@ -11,8 +17,8 @@
    - Breakpoints are written as literal em media queries matching the theme's
      $small 600px / $medium 768px / $large 925px / $x-large 1280px, since
      _variables.scss sets breakpoint("to ems").
-   - Root font-size is 16px, and 18px from $medium up (see _reset.scss), so
-     rem values below scale with the viewport.
+   - The root font-size is pinned to 16px below (the theme bumps it to 18px
+     from $medium up), so 1rem is 16px everywhere.
    ========================================================================== */
 
 /*
@@ -21,39 +27,45 @@
 
 @mixin theme-light {
   color-scheme: light;
-  --paper: #fdfbf8;      /* warm page ground */
-  --paper-2: #f6f1ea;    /* recessed / card ground */
-  --paper-3: #efe8de;    /* hover ground */
-  --ink: #1c1a19;        /* body text            16.8:1 on --paper */
-  --ink-soft: #55504c;   /* secondary text        7.7:1 on --paper */
-  --ink-faint: #6f6862;  /* meta text             5.3:1 on --paper */
-  --rule: #e2dad0;       /* hairlines */
-  --rule-strong: #cfc4b6;
-  --accent: #7d1128;     /* deep maroon          10.3:1 on --paper */
-  --accent-hover: #5c0c1d;
-  --accent-line: #d9b3bb;
-  --accent-wash: #f7ecee;
+  --paper: #ffffff;      /* page ground */
+  --paper-2: #f5f5f5;    /* callouts, code, recessed panels */
+  --paper-3: #ebebeb;    /* hover ground */
+  --bar: #f0f0f0;        /* top bar and footer */
+  --ink: #212121;        /* body text            16.1:1 on --paper */
+  --ink-soft: #555555;   /* secondary text        7.5:1 on --paper */
+  --ink-faint: #707070;  /* meta text             4.9:1 on --paper */
+  --rule: #e0e0e0;       /* hairlines */
+  --rule-strong: #cccccc;/* button outlines */
+  --accent: #800000;     /* UChicago maroon      11.6:1 on --paper */
+  --accent-hover: #5a0000;
+  --accent-line: #d9b3b3;
+  --accent-wash: #f9eeee;
   --figure-mat: #ffffff;
-  --shadow: 0 1px 2px rgba(28, 26, 25, 0.05);
+  --banner-ground: #6c0710; /* shows while the banner image loads */
+  --banner-filter: none;
+  --shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
 @mixin theme-dark {
   color-scheme: dark;
-  --paper: #161514;
-  --paper-2: #1e1c1a;
-  --paper-3: #262320;
-  --ink: #ece7e0;        /* 14.8:1 on --paper */
-  --ink-soft: #b6ada4;   /*  8.6:1 on --paper */
-  --ink-faint: #9a9088;  /*  6.2:1 on --paper */
-  --rule: #332f2b;
-  --rule-strong: #46403a;
-  --accent: #e2919c;     /*  7.6:1 on --paper */
-  --accent-hover: #f0b3bb;
-  --accent-line: #5e3239;
-  --accent-wash: #2a1e20;
+  --paper: #181818;
+  --paper-2: #222222;
+  --paper-3: #2c2c2c;
+  --bar: #222222;
+  --ink: #e6e6e6;        /* 14.0:1 on --paper */
+  --ink-soft: #b3b3b3;   /*  8.4:1 on --paper */
+  --ink-faint: #969696;  /*  6.0:1 on --paper */
+  --rule: #333333;
+  --rule-strong: #4a4a4a;
+  --accent: #ef9a9a;     /*  8.5:1 on --paper */
+  --accent-hover: #f8c4c4;
+  --accent-line: #6b3a3a;
+  --accent-wash: #2b1d1d;
   --figure-mat: #ffffff; /* research figures are line art on white; matting
                             them beats inverting them */
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --banner-ground: #3d0409;
+  --banner-filter: brightness(0.72);
+  --shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
 /* Default: follow the OS. */
@@ -80,16 +92,16 @@ html[data-theme="dark"] {
 }
 
 /*
-   Type. Sans throughout, using the theme's system stack ($sans-serif from
-   _variables.scss), so there is no webfont request at all and the CJK in the
-   site title falls back to the platform's own sans (PingFang SC, Microsoft
-   YaHei, Noto Sans CJK) rather than a mismatched face.
-
-   Headings lean on weight and tight tracking for presence instead of a
-   contrasting family.
+   Layout dimensions
    ========================================================================== */
 
-$display: $sans-serif;
+$bar-h: 4rem;           /* top bar height */
+$content-max: 63rem;    /* 960px of content plus 24px gutters */
+$gutter: 1.5rem;
+$main-top: 3rem;        /* space between banner and page content */
+$sidebar-w: 220px;
+$sidebar-gap: 48px;
+$avatar-mobile: 200px;
 
 /*
    Base
@@ -100,14 +112,32 @@ $display: $sans-serif;
    flash between pages in dark mode. */
 html {
   background-color: var(--paper);
+  font-size: 16px;
+  /* in-page anchors (#honors etc.) land below the sticky bar, not under it */
+  scroll-padding-top: $bar-h + 1rem;
+
+  @media (min-width: 48em) {
+    font-size: 16px;
+  }
 }
 
 body {
   background-color: var(--paper);
   color: var(--ink);
-  line-height: 1.7;
+  font-size: 1rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::-moz-selection {
+  color: #fff;
+  background: #800000;
+}
+
+::selection {
+  color: #fff;
+  background: #800000;
 }
 
 /* The theme fades the masthead in at 0.15s, #main at 0.35s and the footer at
@@ -125,292 +155,196 @@ body {
 }
 
 /*
-   Two-column grid.
-
-   Susy gives the sidebar 15.25% (~174px at desktop), which is too narrow for a
-   contact list -- "tianyuk@uchicago.edu" cannot sit on one line. It also gives
-   .page a 16.95% right suffix, leaving a lopsided empty gutter beside the text.
-
-   Replace both with explicit widths: a 240px sidebar (wide enough for the
-   longest email at full size) and a page column that takes the rest. Every
-   property susy set is restated here so nothing leaks through; this file is
-   imported last, so equal-specificity rules win on order.
-   ========================================================================== */
-
-$sidebar-w: 240px;
-$sidebar-gap: 36px;
-
-#main {
-  @media (min-width: 80em) {
-    max-width: 1080px;
-  }
-}
-
-@media (min-width: 57.8125em) {
-  .sidebar {
-    width: $sidebar-w;
-    margin-right: $sidebar-gap;
-    padding-right: 0;
-    float: left;
-  }
-
-  /* .archive is the content wrapper for `layout: archive` (Publications, CV);
-     .page is the one for `layout: single`/`talk`. Both must be listed, or the
-     one left on susy's 83% width overflows the row next to a 240px sidebar and
-     wraps underneath it. */
-  .page,
-  .archive {
-    width: calc(100% - #{$sidebar-w + $sidebar-gap});
-    margin-right: 0;
-    margin-left: 0;
-    padding-left: 0;
-    padding-right: 0;
-    float: right;
-  }
-}
-
-/* archive-layout pages have no .page__content wrapper, so the measure caps
-   applied there need repeating for direct children of .archive */
-.archive {
-  > p,
-  > ul,
-  > ol,
-  > h2,
-  > h3,
-  > h4 {
-    max-width: 34rem;
-  }
-
-  > .pub-list,
-  > .timeline,
-  > .awards,
-  > .section-head {
-    max-width: 40rem;
-  }
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: $display;
-  color: var(--ink);
-  font-weight: 600;
-  letter-spacing: -0.011em;
-  line-height: 1.25;
-}
-
-h1, .page__title {
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.024em;
-  margin-bottom: 1.1rem;
-}
-
-.page__content {
-  h2 {
-    margin-top: 2.6em;
-    margin-bottom: 0.9em;
-    padding-bottom: 0.38em;
-    font-size: 1.42rem;
-    border-bottom: 1px solid var(--rule);
-  }
-
-  h3 {
-    margin-top: 2em;
-    font-size: 1.14rem;
-  }
-
-  p, li {
-    font-size: 1rem;
-  }
-
-  /* the theme transitions nearly every inline element; calm it down so text
-     does not shimmer on hover */
-  b, i, strong, em, span, p {
-    -webkit-transition: none;
-            transition: none;
-  }
-}
-
-/*
-   Measure. The theme's column is ~87 characters at desktop, well past the
-   60-75 comfortable range, so cap running prose. Components that carry their
-   own left gutter (timeline) or metadata rows (cards) get a little more room,
-   and figures more still.
-   ========================================================================== */
-
-.page__content {
-  > p,
-  > ul,
-  > ol,
-  > dl,
-  > blockquote,
-  > h2,
-  > h3,
-  > h4,
-  > table {
-    max-width: 34rem;
-  }
-
-  > .timeline,
-  > .pub-list,
-  > .awards,
-  > .section-head {
-    max-width: 40rem;
-  }
-
-  > p:has(> img) {
-    max-width: 44rem;
-  }
-}
-
-.section-head {
-  font-family: $display;
-  font-size: 1.42rem;
-  font-weight: 600;
-  margin: 2.6em 0 0.9em;
-  padding-bottom: 0.38em;
-  border-bottom: 1px solid var(--rule);
-  color: var(--ink);
-}
-
-.page__lead {
-  font-family: inherit;
-  font-size: 1rem;
-  color: var(--ink-soft);
-}
-
-/*
-   Links
-   ========================================================================== */
-
-a {
-  color: var(--accent);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.15em;
-}
-
-a:visited {
-  color: var(--accent);
-}
-
-a:hover,
-a:focus {
-  color: var(--accent-hover);
-}
-
-.page__content a {
-  text-decoration: underline;
-  text-decoration-color: var(--accent-line);
-}
-
-.page__content a:hover {
-  text-decoration-color: var(--accent-hover);
-}
-
-/* visible keyboard focus everywhere; the theme only sets a dotted outline */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible,
-[tabindex]:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-  border-radius: 2px;
-}
-
-/*
-   Masthead
+   Top bar
    ========================================================================== */
 
 .masthead {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  background-color: var(--paper);
-  border-bottom: 1px solid var(--rule);
   z-index: 30;
+  background-color: var(--bar);
+  border-bottom: 0;
 }
 
-
+/* The theme gives this @include clearfix; its ::after would become an extra
+   flex item, so drop it. */
 .masthead__inner-wrap {
-  position: relative; /* containing block for .theme-toggle */
-  padding-top: 0.85em;
-  padding-bottom: 0.85em;
-  font-family: inherit;
-}
-
-.masthead__menu-item {
-  a {
-    color: var(--ink-soft);
-    font-size: 0.86rem;
-    letter-spacing: 0.01em;
-    padding-bottom: 2px;
-    border-bottom: 1px solid transparent;
-  }
-
-  a:hover {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
-}
-
-.masthead__menu-item--lg a {
-  font-family: $display;
-  font-size: 1.16rem;
-  font-weight: 600;
-  color: var(--ink);
-  letter-spacing: -0.01em;
-}
-
-.masthead__menu-item--lg a:hover {
-  color: var(--accent);
-  border-bottom-color: transparent;
-}
-
-/*
-   Light / dark toggle. Sits absolutely at the masthead's right edge; the nav
-   gets a matching right margin so greedy-nav's width measurement (and the
-   hamburger it positions at its own right edge) never overlaps it.
-   ========================================================================== */
-
-.masthead__menu {
-  margin-right: 3.1rem;
-}
-
-.theme-toggle {
-  position: absolute;
-  top: 50%;
-  right: 1em;
-  -webkit-transform: translateY(-50%);
-          transform: translateY(-50%);
-  z-index: 25;
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
           align-items: center;
-  -webkit-box-pack: center;
-          justify-content: center;
-  width: 2.3rem;
-  height: 2.3rem;
-  padding: 0;
-  border: 1px solid var(--rule);
-  border-radius: 50%;
-  background-color: transparent;
-  color: var(--ink-soft);
-  font-size: 0.82rem;
-  line-height: 1;
-  cursor: pointer;
-  -webkit-transition: color 0.18s ease, border-color 0.18s ease,
-                      background-color 0.18s ease;
-          transition: color 0.18s ease, border-color 0.18s ease,
-                      background-color 0.18s ease;
+  max-width: none;
+  height: $bar-h;
+  padding: 0 $gutter;
+  font-family: inherit;
+
+  &::after {
+    display: none;
+  }
+
+  @media (min-width: 80em) {
+    max-width: none;
+  }
 }
 
-.theme-toggle:hover {
+.masthead__title {
+  -webkit-box-flex: 0;
+          flex: 0 0 auto;
+  margin-right: 1rem;
+  color: var(--ink);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 2rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.masthead__title:visited {
+  color: var(--ink);
+}
+
+.masthead__title:hover {
   color: var(--accent);
-  border-color: var(--accent);
-  background-color: var(--accent-wash);
+  text-decoration: none;
+}
+
+/* Below 400px the bar has to hold the name, the overflow button and the theme
+   toggle; drop the name a size so the CJK never clips. */
+@media (max-width: 24.99em) {
+  .masthead__title {
+    font-size: 1.05rem;
+  }
+}
+
+.masthead__menu {
+  -webkit-box-flex: 1;
+          flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+}
+
+/*
+   Page links. greedy-navigation.js measures .visible-links against the width
+   #site-nav has left and moves links that do not fit into .hidden-links behind
+   the button. That works as long as .visible-links stays shrink-wrapped to its
+   content, so it is a non-growing flex item pushed to the right, never a
+   full-width box.
+   ========================================================================== */
+
+.greedy-nav {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: end;
+          justify-content: flex-end;
+  min-width: 0;
+  background: transparent;
+
+  .visible-links {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-flex: 0;
+            flex: 0 0 auto;
+
+    li {
+      display: block;
+    }
+
+    li:first-child {
+      font-weight: inherit;
+    }
+
+    a {
+      margin: 0;
+      padding: 0 0.75rem;
+      color: var(--ink);
+      font-size: 1rem;
+      line-height: 2rem;
+    }
+
+    li:last-child a {
+      padding-right: 0.25rem;
+    }
+
+    a:before,
+    a:after {
+      display: none; /* the theme's sliding underline */
+    }
+
+    a:hover {
+      color: var(--accent);
+    }
+  }
+
+  /* while the overflow button shows, keep the links clear of it */
+  button:not(.hidden) + .visible-links {
+    margin-right: 2.9rem;
+  }
+
+  .masthead__menu-item.is-active a {
+    font-weight: 700;
+  }
+
+  /* overflow menu, styled as a plain dropdown card */
+  .hidden-links {
+    top: 100%;
+    right: 0;
+    min-width: 12rem;
+    margin-top: 0.75rem;
+    padding: 0.25rem 0;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+
+    &:before,
+    &:after {
+      display: none;
+    }
+
+    li {
+      display: block;
+      border: 0;
+    }
+
+    a {
+      margin: 0;
+      padding: 0.5rem 1rem;
+      color: var(--ink);
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+
+    a:hover {
+      background-color: var(--paper-3);
+      color: var(--ink);
+    }
+  }
+
+  /* Overflow button: a quiet circle matching the theme toggle. The theme ships
+     a full-height solid block with white 28x4px bars, which reads far too loud
+     here (and the white bars would vanish on the light bar). No `display`
+     here: the theme's .hidden utility has to be able to hide it. */
+  button {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+    width: 2.3rem;
+    height: 2.3rem;
+    padding: 0;
+    border: 1px solid var(--rule-strong);
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--ink-soft);
+  }
+
+  button:hover {
+    border-color: var(--accent);
+    background-color: var(--accent-wash);
+  }
 }
 
 /*
@@ -456,6 +390,42 @@ select:focus-visible,
   width: 15px;
 }
 
+/*
+   Light / dark toggle: the last item in the bar.
+   ========================================================================== */
+
+.theme-toggle {
+  -webkit-box-flex: 0;
+          flex: 0 0 auto;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+          justify-content: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  margin-left: 0.75rem;
+  padding: 0;
+  border: 1px solid var(--rule-strong);
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-transition: color 0.18s ease, border-color 0.18s ease,
+                      background-color 0.18s ease;
+          transition: color 0.18s ease, border-color 0.18s ease,
+                      background-color 0.18s ease;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background-color: var(--accent-wash);
+}
+
 /* Show the icon for the mode the button will switch you TO. With no explicit
    choice stored, that depends on the OS; once <html data-theme> is set, it
    depends only on the attribute. */
@@ -493,54 +463,215 @@ html[data-theme="light"] .theme-toggle__to-light {
   display: none;
 }
 
-.greedy-nav {
-  background: transparent;
+/*
+   Banner
+   ========================================================================== */
 
-  .visible-links a:before,
-  .hidden-links a:before {
-    display: none; /* kill the theme's sliding underline; we use border-bottom */
+.site-banner {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  background-color: var(--banner-ground);
+
+  @media (min-width: 48em) {
+    height: 320px;
   }
 
-  /* Match the theme toggle: same circle, same weight. The theme ships a
-     full-height solid block with white 28x4px bars, which reads far too loud
-     beside it (and the white bars would vanish on a light ground). */
-  button {
+  img {
     position: absolute;
-    top: 50%;
-    right: 0;
-    -webkit-transform: translateY(-50%);
-            transform: translateY(-50%);
-    width: 2.3rem;
-    height: 2.3rem;
-    padding: 0;
-    border: 1px solid var(--rule);
-    border-radius: 50%;
-    background-color: transparent;
-    color: var(--ink-soft);
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    -o-object-fit: cover;
+       object-fit: cover;
+    -webkit-filter: var(--banner-filter);
+            filter: var(--banner-filter);
+  }
+}
+
+/*
+   Two-column grid.
+
+   Susy gives the sidebar 15.25% and .page a 16.95% right suffix, leaving a
+   lopsided empty gutter. Replace both with explicit widths: a 220px sidebar
+   (the portrait's width) and a page column that takes the rest of a 960px
+   container. Every property susy set is restated here so nothing leaks
+   through; this file is imported last, so equal-specificity rules win on
+   order.
+   ========================================================================== */
+
+#main {
+  max-width: $content-max;
+  margin-top: 0;
+  padding: 2rem $gutter 4rem;
+
+  @media (min-width: 57.8125em) {
+    padding-top: $main-top;
   }
 
-  button:hover {
-    border-color: var(--accent);
-    background-color: var(--accent-wash);
+  @media (min-width: 80em) {
+    max-width: $content-max;
+  }
+}
+
+@media (min-width: 57.8125em) {
+  .sidebar {
+    width: $sidebar-w;
+    margin-right: $sidebar-gap;
+    padding-right: 0;
+    float: left;
   }
 
-  .hidden-links {
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    box-shadow: var(--shadow);
-
-    a {
-      color: var(--ink-soft);
-    }
-
-    &:after {
-      border-bottom-color: var(--paper);
-    }
-
-    &:before {
-      border-bottom-color: var(--rule);
-    }
+  /* .archive is the content wrapper for `layout: archive` (Publications, CV);
+     .page is the one for `layout: single`/`talk`. Both must be listed, or the
+     one left on susy's 83% width overflows the row next to the sidebar and
+     wraps underneath it. */
+  .page,
+  .archive {
+    width: calc(100% - #{$sidebar-w + $sidebar-gap});
+    margin-right: 0;
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 0;
+    float: right;
   }
+}
+
+/* The theme makes the sidebar position: sticky from $large up. With the
+   portrait pulled up into the banner that would leave the photo stuck half
+   under the top bar while scrolling, so let it scroll with the page.
+   (Stickyfill in main.min.js only polyfills browsers without native sticky,
+   and does nothing to a static element.) */
+.sidebar.sticky {
+  position: relative;
+  top: auto;
+}
+
+/*
+   Type
+   ========================================================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: inherit;
+  color: var(--ink);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+h1, .page__title {
+  margin: 0 0 1.5rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+
+  @media (min-width: 48em) {
+    font-size: 3rem;
+  }
+}
+
+/* the large lead line under a page title (front matter `subtitle:`, or a
+   <p class="page__lead"> at the top of an archive page) */
+/* qualified to beat the `.archive p` / `.page__content p` size below */
+.archive .page__subtitle,
+.page__subtitle {
+  margin: -0.75rem 0 2rem;
+  color: var(--ink);
+  font-size: 1.25rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.archive .page__lead,
+.page__content .page__lead,
+.page__lead {
+  margin: -0.75rem 0 2rem;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1.25rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.page__content,
+.archive {
+  h2 {
+    margin: 2.5rem 0 0.75rem;
+    padding-bottom: 0;
+    font-size: 1.75rem;
+    border-bottom: 0;
+  }
+
+  h3 {
+    margin: 2rem 0 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  p, li {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  /* the theme transitions nearly every inline element; calm it down so text
+     does not shimmer on hover */
+  b, i, strong, em, span, p {
+    -webkit-transition: none;
+            transition: none;
+  }
+}
+
+.section-head {
+  margin: 2.5rem 0 0.75rem;
+  padding-bottom: 0;
+  border-bottom: 0;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+/*
+   Links: underlined and in the accent colour everywhere in the content, as on
+   a printed page; the bar and buttons opt out below.
+   ========================================================================== */
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.15em;
+}
+
+a:visited {
+  color: var(--accent);
+}
+
+a:hover,
+a:focus {
+  color: var(--accent-hover);
+}
+
+.masthead a,
+.masthead a:hover {
+  text-decoration: none;
+}
+
+/* visible keyboard focus everywhere; the theme only sets a dotted outline */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 /*
@@ -548,32 +679,54 @@ html[data-theme="light"] .theme-toggle__to-light {
    ========================================================================== */
 
 .author__profile {
-  padding-bottom: 1.25em;
-  border-bottom: 1px solid var(--rule);
+  text-align: center;
 
   @media (min-width: 57.8125em) {
-    padding-bottom: 0;
-    border-bottom: 0;
+    text-align: left;
   }
 }
 
 .author__avatar {
+  position: relative; /* paint above the banner it overlaps */
+  z-index: 2;
   display: block;
-  width: auto;
+  width: $avatar-mobile;
+  margin: 0 auto;
 
   img {
+    display: block;
     width: 100%;
-    max-width: 120px;
-    border-radius: 50%;
-    border: 1px solid var(--rule);
-    padding: 4px;
-    background: var(--paper);
+    max-width: none;
+    height: auto;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background: var(--paper-2);
+    /* a frame in the page colour, so the photo reads as cut out of the page
+       where it overlaps the banner */
+    box-shadow: 0 0 0 5px var(--paper);
   }
 
   @media (min-width: 57.8125em) {
+    width: 100%;
+    margin: 0;
+
     img {
-      max-width: 180px;
+      max-width: none;
+      padding: 0;
+      border: 0;
     }
+  }
+}
+
+/* Pull the portrait up so its top half sits on the banner. On the two-column
+   layout a percentage margin resolves against the sidebar's width, which is
+   also the portrait's height, so -50% is exactly half the photo. */
+.has-banner .author__avatar {
+  margin-top: calc(-#{$avatar-mobile / 2} - 2rem);
+
+  @media (min-width: 57.8125em) {
+    margin-top: calc(-50% - #{$main-top});
   }
 }
 
@@ -587,31 +740,34 @@ html[data-theme="light"] .theme-toggle__to-light {
 
 .sidebar .author__name,
 .author__name {
-  font-family: $display;
-  font-size: 1.16rem;
-  font-weight: 600;
+  margin: 1.5rem 0 0.25rem;
   color: var(--ink);
-  margin: 0.85rem 0 0.3rem;
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-weight: 700;
   line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
+.sidebar .author__bio,
 .author__bio {
-  margin: 0 0 0.3rem;
-  color: var(--ink-soft);
-  font-size: 0.84rem;
+  margin: 0 0 0.9rem;
+  color: var(--ink);
+  font-size: 1rem;
   line-height: 1.5;
 }
 
+.sidebar .author__org,
 .author__org {
   margin: 0;
-  color: var(--ink-faint);
-  font-size: 0.8rem;
+  color: var(--ink);
+  font-size: 1rem;
   line-height: 1.5;
 }
 
 .author__loc {
   display: block;
-  color: var(--ink-faint);
+  color: var(--ink-soft);
 }
 
 .author__urls-wrapper {
@@ -620,20 +776,21 @@ html[data-theme="light"] .theme-toggle__to-light {
 }
 
 /* Disclosure toggle for the link list on narrow screens. Hidden from $large
-   up, which is also the signal main.min.js reads to keep the list visible. */
-/* !important: the theme's .btn--inverse sets `color: $gray !important` and
+   up, which is also the signal main.min.js reads to keep the list visible.
+   !important: the theme's .btn--inverse sets `color: $gray !important` and
    `border: 1px solid $light-gray !important`. */
 .author__toggle {
   display: inline-block;
-  margin: 0.9rem 0 0;
-  padding: 0.42em 0.9em;
-  background-color: transparent;
+  margin: 1rem 0 0;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--paper);
   border: 1px solid var(--rule-strong) !important;
-  border-radius: 3px;
-  color: var(--ink-soft) !important;
+  border-radius: 4px;
+  color: var(--ink) !important;
   font-family: inherit;
-  font-size: 0.82rem;
-  letter-spacing: 0.01em;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
   cursor: pointer;
   min-height: 44px;
 }
@@ -650,24 +807,33 @@ html[data-theme="light"] .theme-toggle__to-light {
   }
 }
 
+/* inline-block so the list centres under the toggle on phones while its rows
+   stay left-aligned; main.min.js only ever toggles it between display:none
+   and its stylesheet value */
 .author__urls {
-  display: block;
+  display: inline-block;
   position: static;
-  margin: 0.9rem 0 0;
+  margin: 1rem 0 0;
   padding: 0;
   border: 0;
   background: transparent;
   box-shadow: none;
   list-style: none;
+  text-align: left;
 
   &:before,
   &:after {
     display: none;
   }
 
+  @media (min-width: 57.8125em) {
+    display: block;
+    margin-top: 1.5rem;
+  }
+
   li {
     white-space: normal;
-    margin-bottom: 0;
+    margin-bottom: 0.5rem;
   }
 
   /* flex so the icon stays on the first text line instead of being orphaned
@@ -677,70 +843,69 @@ html[data-theme="light"] .theme-toggle__to-light {
     display: flex;
     -webkit-box-align: start;
             align-items: flex-start;
-    padding: 0.3rem 0;
-    color: var(--ink-soft);
-    font-size: 0.82rem;
-    line-height: 1.45;
+    padding: 0;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    line-height: 1.5rem;
     text-decoration: none;
   }
 
-  a:hover {
+  .author__urls-label {
+    min-width: 0;
     color: var(--accent);
-    text-decoration: none;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
+    word-break: break-word;
+  }
+
+  a:hover .author__urls-label {
+    color: var(--accent-hover);
   }
 
   i,
   .ai {
     -webkit-box-flex: 0;
             flex: 0 0 auto;
-    margin-right: 0.45em;
-    line-height: 1.45;
-    color: var(--ink-faint);
+    width: 1.5rem;
+    margin-right: 0.5rem;
+    color: var(--ink);
+    opacity: 0.54;
+    line-height: 1.5rem;
+    text-align: center;
   }
-
-  .author__urls-label {
-    min-width: 0;
-    word-break: break-word;
-  }
-
-  a:hover i,
-  a:hover .ai {
-    color: var(--accent);
-  }
-}
-
-.author__url--alt a {
-  color: var(--ink-faint);
-  font-size: 0.78rem;
 }
 
 .sidebar {
-  p, li {
-    font-size: 0.82rem;
-    line-height: 1.5;
-  }
+  margin-bottom: 2.5rem; /* stacked above the page on narrow screens */
 
   @media (min-width: 57.8125em) {
-    font-size: inherit;
+    margin-bottom: 1em;
+  }
+
+  p, li {
+    font-size: 1rem;
+    line-height: 1.5;
   }
 }
 
 /*
-   Pills
+   Pills (talks: "upcoming")
    ========================================================================== */
 
 .pill {
   display: inline-block;
-  padding: 0.14em 0.62em 0.2em;
+  padding: 0.05em 0.55em 0.1em;
   border: 1px solid var(--rule-strong);
-  border-radius: 100px;
-  background-color: var(--paper-2);
+  border-radius: 4px;
+  background-color: var(--paper);
   color: var(--ink-soft);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
+  font-weight: 400;
   line-height: 1.5;
-  letter-spacing: 0.015em;
+  letter-spacing: 0.01em;
   white-space: nowrap;
-  vertical-align: baseline;
+  vertical-align: middle;
 }
 
 .pill--award {
@@ -755,117 +920,159 @@ html[data-theme="light"] .theme-toggle__to-light {
 }
 
 /*
-   Publication cards
+   Publications
    ========================================================================== */
 
 .pub-list {
-  margin-top: 1.6rem;
+  margin-top: 2rem;
 }
 
 .pub {
-  position: relative;
-  margin: 0 0 0.3rem;
-  padding: 0.85rem 0 0.95rem 1.15rem;
-  border-left: 2px solid var(--rule);
-  -webkit-transition: border-color 0.18s ease, background-color 0.18s ease;
-          transition: border-color 0.18s ease, background-color 0.18s ease;
-}
-
-.pub:hover {
-  border-left-color: var(--accent);
-  background-color: var(--paper-2);
+  margin: 0 0 2rem;
+  padding: 0;
+  border: 0;
 }
 
 .pub__title {
-  font-family: $display;
-  font-size: 1.1rem;
-  font-weight: 600;
-  line-height: 1.3;
-  margin: 0 0 0.4rem;
+  margin: 0 0 0.5rem;
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 
   a {
-    color: var(--ink);
-    text-decoration: none;
+    color: var(--accent);
+    text-decoration: underline;
   }
 
   a:hover {
-    color: var(--accent);
-    text-decoration: none;
+    color: var(--accent-hover);
   }
 }
 
+.page__content .pub__authors,
+.archive .pub__authors,
 .pub__authors {
-  margin: 0 0 0.5rem;
-  color: var(--ink-soft);
-  font-size: 0.87rem;
-  line-height: 1.55;
+  margin: 0 0 0.15rem;
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.5;
 
   strong {
     color: var(--ink);
-    font-weight: 600;
+    font-weight: 700;
   }
 }
 
+/* Venue, year, award and note, as one grey line joined by middle dots. The
+   markup keeps them as separate spans (some carrying .pill) so this is pure
+   presentation. */
+.page__content .pub__meta,
+.archive .pub__meta,
 .pub__meta {
-  margin: 0 0 0.4rem;
   display: block;
+  margin: 0 0 0.75rem;
+  color: var(--ink-faint);
+  font-size: 1rem;
+  line-height: 1.5;
+
+  /* the markup already leaves a space between the spans, so the dot only
+     needs room on its right */
+  > * + *:before {
+    content: "\00b7";
+    margin: 0 0.4em 0 0;
+    color: var(--ink-faint);
+  }
 
   .pill {
-    margin-right: 0.35rem;
+    display: inline;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    color: var(--ink-faint);
+    font-size: inherit;
+    line-height: inherit;
+    letter-spacing: 0;
+    white-space: normal;
+    vertical-align: baseline;
+  }
+
+  .pill--award {
+    color: var(--accent);
   }
 }
 
 .pub__year {
   color: var(--ink-faint);
-  font-size: 0.78rem;
-  letter-spacing: 0.02em;
-  margin-right: 0.35rem;
+  -webkit-font-feature-settings: "tnum";
+          font-feature-settings: "tnum";
 }
 
 .pub__citation {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.75rem;
   color: var(--ink-faint);
-  font-size: 0.8rem;
+  font-size: 0.9375rem;
   font-style: italic;
 }
 
+.page__content .pub__links,
+.archive .pub__links,
 .pub__links {
+  display: -webkit-box;
+  display: flex;
+  flex-wrap: wrap;
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.9375rem;
 }
 
-.pub__link {
+/* Outlined buttons for Abstract / Publisher / arXiv. Qualified with
+   .pub__links a because the theme underlines every link in .archive and
+   .page__content at (0,1,1), and their :hover at (0,2,1). */
+.pub__links a.pub__link {
   display: inline-block;
-  margin-right: 1rem;
+  margin: 0 0.5rem 0.5rem 0;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: 4px;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-size: 0.9375rem;
+  line-height: 1.5rem;
+  text-decoration: none;
+  -webkit-transition: border-color 0.15s ease, color 0.15s ease;
+          transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.pub__links a.pub__link:visited {
+  color: var(--ink);
+}
+
+.pub__links a.pub__link:hover,
+.pub__links a.pub__link:focus {
+  border-color: var(--accent);
   color: var(--accent);
   text-decoration: none;
-  border-bottom: 1px solid var(--accent-line);
 }
 
-.pub__link:hover {
-  color: var(--accent-hover);
-  border-bottom-color: var(--accent-hover);
-  text-decoration: none;
-}
-
-/* individual publication pages reuse the same blocks under the page header */
-.page__inner-wrap > header {
-  .pub__authors,
-  .pub__meta,
-  .pub__citation,
-  .pub__links {
-    max-width: 40rem;
-  }
-}
-
-/* separate the citation header from the abstract. :has() scopes this to
+/* individual publication pages reuse the same blocks under the page header,
+   separated from the abstract by a hairline. :has() scopes this to
    publication pages; where it is unsupported the page simply keeps the
    default spacing. */
 .page__inner-wrap > header:has(.pub__meta) {
-  max-width: 40rem;
   padding-bottom: 1rem;
   margin-bottom: 1.5rem;
   border-bottom: 1px solid var(--rule);
+
+  .page__title {
+    margin-bottom: 1rem;
+    font-size: 2rem;
+
+    @media (min-width: 48em) {
+      font-size: 2.25rem;
+    }
+  }
 
   .pub__links {
     margin-bottom: 0;
@@ -878,14 +1085,14 @@ html[data-theme="light"] .theme-toggle__to-light {
 
 .timeline {
   list-style: none;
-  margin: 1.6rem 0 0;
+  margin: 1.5rem 0 0;
   padding: 0;
 }
 
 .timeline__item {
   position: relative;
   margin: 0;
-  padding: 0 0 1.55rem 0;
+  padding: 0 0 1.5rem 0;
   list-style: none;
 
   @media (min-width: 37.5em) {
@@ -923,7 +1130,7 @@ html[data-theme="light"] .theme-toggle__to-light {
   .timeline__date {
     position: absolute;
     left: 0;
-    top: 0.1rem;
+    top: 0.05rem;
     width: 3.7rem;
     text-align: right;
   }
@@ -931,25 +1138,29 @@ html[data-theme="light"] .theme-toggle__to-light {
 
 .timeline__date {
   color: var(--ink-faint);
-  font-size: 0.78rem;
-  letter-spacing: 0.02em;
+  font-size: 0.875rem;
   line-height: 1.6;
   margin-bottom: 0.15rem;
+  -webkit-font-feature-settings: "tnum";
+          font-feature-settings: "tnum";
 }
 
+.page__content .timeline__title,
 .timeline__title {
-  font-family: $display;
-  font-size: 1.05rem;
-  font-weight: 600;
-  line-height: 1.35;
   margin: 0 0 0.25rem;
   color: var(--ink);
+  font-family: inherit;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0;
 }
 
+.page__content .timeline__venue,
 .timeline__venue {
   margin: 0;
   color: var(--ink-soft);
-  font-size: 0.88rem;
+  font-size: 0.9375rem;
   line-height: 1.55;
 }
 
@@ -957,19 +1168,10 @@ html[data-theme="light"] .theme-toggle__to-light {
   color: var(--ink-faint);
 }
 
+.page__content .timeline__links,
 .timeline__links {
   margin: 0.35rem 0 0;
-  font-size: 0.82rem;
-
-  a {
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid var(--accent-line);
-  }
-
-  a:hover {
-    border-bottom-color: var(--accent-hover);
-  }
+  font-size: 0.9375rem;
 }
 
 /*
@@ -978,7 +1180,7 @@ html[data-theme="light"] .theme-toggle__to-light {
 
 .awards {
   list-style: none;
-  margin: 1.4rem 0 0;
+  margin: 1rem 0 0;
   padding: 0;
 }
 
@@ -990,7 +1192,7 @@ html[data-theme="light"] .theme-toggle__to-light {
   -webkit-box-pack: justify;
           justify-content: space-between;
   margin: 0;
-  padding: 0.55rem 0;
+  padding: 0.6rem 0;
   border-bottom: 1px solid var(--rule);
   list-style: none;
 }
@@ -1001,15 +1203,14 @@ html[data-theme="light"] .theme-toggle__to-light {
 
 .awards__name {
   color: var(--ink);
-  font-size: 0.94rem;
+  font-size: 1rem;
   line-height: 1.5;
   padding-right: 1rem;
 }
 
 .awards__year {
   color: var(--ink-faint);
-  font-size: 0.82rem;
-  letter-spacing: 0.02em;
+  font-size: 0.9375rem;
   white-space: nowrap;
   -webkit-font-feature-settings: "tnum";
           font-feature-settings: "tnum";
@@ -1026,22 +1227,22 @@ html[data-theme="light"] .theme-toggle__to-light {
   display: block;
   width: 100%;
   height: auto;
-  margin: 0 auto 0.6rem;
+  margin: 0.5rem auto 0.6rem;
   border: 1px solid var(--rule);
-  border-radius: 3px;
+  border-radius: 4px;
   background-color: var(--figure-mat);
 }
 
 .page__content p > img + em {
   display: block;
+  max-width: 36rem;
+  margin: 0 auto;
   color: var(--ink-faint);
-  font-family: $display;
-  font-size: 0.82rem;
+  font-family: inherit;
+  font-size: 0.875rem;
   font-style: italic;
   line-height: 1.55;
   text-align: center;
-  max-width: 34rem;
-  margin: 0 auto;
 }
 
 .page__content a:hover img {
@@ -1052,14 +1253,13 @@ html[data-theme="light"] .theme-toggle__to-light {
 
 figcaption {
   color: var(--ink-faint);
-  font-family: $display;
+  font-family: inherit;
 }
 
-/* the vendored magnific-popup lightbox chrome is the last serif left in the
-   bundle */
+/* the vendored magnific-popup lightbox chrome sets its own face */
 .mfp-counter,
 .mfp-close {
-  font-family: $display;
+  font-family: inherit;
 }
 
 /*
@@ -1069,32 +1269,113 @@ figcaption {
 /* !important is required here: the theme's .btn sets `color: #fff !important`
    and `border: 0 !important`, and its own .btn--inverse modifier overrides them
    the same way. */
-.btn--accent {
-  background-color: var(--accent);
-  color: #fff !important;
-  border: 1px solid var(--accent) !important;
+a.btn--accent,
+a.btn--ghost,
+.btn--accent,
+.btn--ghost {
+  padding: 0.5rem 0.9rem;
+  border-radius: 4px;
   font-family: inherit;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  text-decoration: none;
 }
 
-.btn--accent:hover {
+.btn--accent {
+  background-color: var(--accent);
+  color: var(--paper) !important;
+  border: 1px solid var(--accent) !important;
+}
+
+.btn--accent:hover,
+a.btn--accent:hover {
+  text-decoration: none;
   background-color: var(--accent-hover);
   border-color: var(--accent-hover) !important;
-  color: #fff !important;
+  color: var(--paper) !important;
 }
 
 .btn--ghost {
-  background-color: transparent;
-  color: var(--accent) !important;
-  border: 1px solid var(--accent-line) !important;
-  font-family: inherit;
-  font-weight: 600;
+  background-color: var(--paper);
+  color: var(--ink) !important;
+  border: 1px solid var(--rule-strong) !important;
 }
 
-.btn--ghost:hover {
-  background-color: var(--accent-wash);
-  color: var(--accent-hover) !important;
+.btn--ghost:hover,
+a.btn--ghost:hover {
+  text-decoration: none;
+  background-color: var(--paper);
+  color: var(--accent) !important;
   border-color: var(--accent) !important;
+}
+
+/*
+   Share row on publication / talk pages: the same outlined buttons as the
+   publication links instead of the theme's brand-coloured blocks.
+   ========================================================================== */
+
+.page__share {
+  border-top-color: var(--rule);
+}
+
+.page__share-title {
+  color: var(--ink-faint);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* !important: the theme's .btn sets `color: #fff !important` */
+.page__share a.btn {
+  margin: 0 0.5rem 0.5rem 0;
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--rule-strong) !important;
+  border-radius: 4px;
+  background-color: var(--paper);
+  color: var(--ink) !important;
+  font-family: inherit;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+  text-decoration: none;
+
+  i {
+    color: var(--ink-faint);
+  }
+}
+
+.page__share a.btn:hover {
+  background-color: var(--paper);
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  text-decoration: none;
+
+  i {
+    color: var(--accent);
+  }
+}
+
+/*
+   Callouts. The theme's .notice blocks, flattened to the soft grey panel the
+   rest of the layout uses.
+   ========================================================================== */
+
+.notice,
+.notice--info,
+.notice--warning,
+.notice--success,
+.notice--danger,
+.notice--primary {
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  background-color: var(--paper-2);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  color: var(--ink);
+  font-size: 1rem;
 }
 
 /*
@@ -1112,7 +1393,7 @@ figcaption {
 
 .cv__embed {
   border: 1px solid var(--rule);
-  border-radius: 3px;
+  border-radius: 4px;
   background-color: var(--paper-2);
   overflow: hidden;
 
@@ -1138,41 +1419,63 @@ figcaption {
 }
 
 /*
-   Footer
+   Footer: grey band, centred.
    ========================================================================== */
 
 .page__footer {
-  background-color: var(--paper-2);
-  border-top: 1px solid var(--rule);
-  color: var(--ink-faint);
+  margin-top: 0;
+  background-color: var(--bar);
+  border-top: 0;
+  color: var(--ink);
+  text-align: center;
 
-  a {
-    color: var(--ink-soft);
+  footer {
+    max-width: $content-max;
+    margin-top: 0;
+    padding: 2.5rem $gutter;
+
+    @media (min-width: 80em) {
+      max-width: $content-max;
+    }
+  }
+
+  a,
+  a:visited {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.15em;
   }
 
   a:hover {
     color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .fab,
+  .fas {
+    color: inherit;
   }
 }
 
 .page__footer-copyright {
   font-family: inherit;
-  font-size: 0.76rem;
+  font-size: 1rem;
   line-height: 1.6;
 }
 
-.page__footer-follow {
-  ul {
-    margin: 0;
-    padding: 0;
-  }
+.page__footer-sep {
+  margin: 0 0.5em;
+}
 
-  li {
-    font-size: 0.78rem;
-  }
+.page__footer-credit {
+  margin-top: 0.5rem;
+  color: var(--ink-faint);
+  font-size: 0.8125rem;
 
-  .social-icons a {
-    color: var(--ink-soft);
+  a,
+  a:visited {
+    color: var(--ink-faint);
   }
 }
 
@@ -1193,16 +1496,6 @@ pre,
   background-color: var(--paper-2);
   border-color: var(--rule);
   color: var(--ink);
-}
-
-.notice,
-.notice--info,
-.notice--warning,
-.notice--success,
-.notice--danger,
-.notice--primary {
-  background-color: var(--paper-2);
-  color: var(--ink-soft);
 }
 
 table {
@@ -1274,6 +1567,7 @@ mjx-container[display="true"] {
 
 @media print {
   .masthead,
+  .site-banner,
   .page__footer,
   .page__share,
   .author__urls-wrapper,
@@ -1288,6 +1582,10 @@ mjx-container[display="true"] {
     padding-bottom: 0;
   }
 
+  .has-banner .author__avatar {
+    margin-top: 0;
+  }
+
   .page {
     width: 100% !important;
     margin: 0 !important;
@@ -1295,8 +1593,6 @@ mjx-container[display="true"] {
   }
 
   .pub {
-    border-left: 0;
-    padding-left: 0;
     page-break-inside: avoid;
   }
 

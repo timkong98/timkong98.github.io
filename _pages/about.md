@@ -1,6 +1,7 @@
 ---
 permalink: /
 title: "About"
+subtitle: "Mathematical modeling, computation and numerical analysis for condensed matter physics."
 excerpt: "About me"
 author_profile: true
 redirect_from: 

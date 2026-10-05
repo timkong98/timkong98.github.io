@@ -15,6 +15,8 @@ url                      : https://timkong98.github.io # the base hostname & pro
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "timkong98.github.io"
 teaser                   : # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
+banner                   : "banner.jpg"  # wide image under the top bar, in /images/; leave blank for none
+banner_webp              : "banner.webp" # optional smaller copy of the same image, served to browsers that support it
 
 
 

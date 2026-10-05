@@ -1,0 +1,16 @@
+{% include base_path %}
+
+{%- comment -%}
+  Full-width image strip under the masthead. Purely decorative, so it carries
+  an empty alt and is hidden from assistive tech. Set `banner` (and optionally
+  `banner_webp`) in _config.yml; with `banner` blank nothing is rendered and the
+  layout falls back to a plain page with no overlapping avatar.
+{%- endcomment -%}
+{% if site.banner %}
+<div class="site-banner" aria-hidden="true">
+  <picture>
+    {% if site.banner_webp %}<source srcset="{{ base_path }}/images/{{ site.banner_webp }}" type="image/webp">{% endif %}
+    <img src="{{ base_path }}/images/{{ site.banner }}" alt="" decoding="async">
+  </picture>
+</div>
+{% endif %}

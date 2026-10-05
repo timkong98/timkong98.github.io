@@ -11,10 +11,11 @@ layout: compress
     {% include head/custom.html %}
   </head>
 
-  <body>
+  <body{% if site.banner %} class="has-banner"{% endif %}>
 
     {% include browser-upgrade.html %}
     {% include masthead.html %}
+    {% include banner.html %}
 
     {{ content }}
 

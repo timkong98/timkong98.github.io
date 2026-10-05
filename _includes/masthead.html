@@ -1,28 +1,39 @@
 {% include base_path %}
 
+{%- comment -%}
+  The site title sits outside #site-nav on purpose. greedy-navigation.js
+  compares the width of .visible-links with the room #site-nav has left, so
+  with the title outside, only the page links are ever moved into the overflow
+  menu and the title can never be squeezed out of the bar.
+{%- endcomment -%}
+{%- assign collection_url = '/' | append: page.collection | append: '/' -%}
 <div class="masthead">
   <div class="masthead__inner-wrap">
-    <button class="theme-toggle" type="button"
-            aria-label="Switch to dark mode" title="Switch to dark mode">
-      <i class="fas fa-moon theme-toggle__to-dark" aria-hidden="true"></i>
-      <i class="fas fa-sun theme-toggle__to-light" aria-hidden="true"></i>
-    </button>
+    <a class="masthead__title" href="{{ base_path }}/">{{ site.title }}</a>
     <div class="masthead__menu">
-      <nav id="site-nav" class="greedy-nav">
-        <button><div class="navicon"></div></button>
+      <nav id="site-nav" class="greedy-nav" aria-label="Main">
+        <button type="button" aria-label="More pages"><div class="navicon"></div></button>
         <ul class="visible-links">
-          <li class="masthead__menu-item masthead__menu-item--lg"><a href="{{ base_path }}/">{{ site.title }}</a></li>
           {% for link in site.data.navigation.main %}
             {% if link.url contains 'http' %}
               {% assign domain = '' %}
-              {% else %}
+            {% else %}
               {% assign domain = base_path %}
             {% endif %}
-            <li class="masthead__menu-item"><a href="{{ domain }}{{ link.url }}">{{ link.title }}</a></li>
+            {% assign is_current = false %}
+            {% if page.url contains link.url or collection_url == link.url %}
+              {% assign is_current = true %}
+            {% endif %}
+            <li class="masthead__menu-item{% if is_current %} is-active{% endif %}"><a href="{{ domain }}{{ link.url }}"{% if is_current %} aria-current="page"{% endif %}>{{ link.title }}</a></li>
           {% endfor %}
         </ul>
         <ul class="hidden-links hidden"></ul>
       </nav>
     </div>
+    <button class="theme-toggle" type="button"
+            aria-label="Switch to dark mode" title="Switch to dark mode">
+      <i class="fas fa-moon theme-toggle__to-dark" aria-hidden="true"></i>
+      <i class="fas fa-sun theme-toggle__to-light" aria-hidden="true"></i>
+    </button>
   </div>
 </div>

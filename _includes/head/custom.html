@@ -16,7 +16,7 @@
            stylesheet is parsed. Without this a stored dark theme still shows a
            white flash when the OS itself is in light mode. */
         r.style.colorScheme = t;
-        r.style.backgroundColor = (t === 'dark') ? '#161514' : '#fdfbf8';
+        r.style.backgroundColor = (t === 'dark') ? '#181818' : '#ffffff';
       }
     } catch (e) { /* private mode / storage disabled */ }
   })();
@@ -24,6 +24,16 @@
 
 <!-- the toggle is inert without JS, so don't offer it -->
 <noscript><style>.theme-toggle { display: none; }</style></noscript>
+
+<!-- Open Sans, the face the site's layout is modelled on. The CJK in the site
+     title is not in it and falls back to the platform sans. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+
+{% if site.banner %}
+<link rel="preload" as="image" href="{{ base_path }}/images/{{ site.banner_webp | default: site.banner }}"{% if site.banner_webp %} type="image/webp"{% endif %}>
+{% endif %}
 
 <link rel="apple-touch-icon" sizes="57x57" href="{{ base_path }}/images/apple-touch-icon-57x57.png?v=2026phoenix">
 <link rel="apple-touch-icon" sizes="60x60" href="{{ base_path }}/images/apple-touch-icon-60x60.png?v=2026phoenix">
@@ -41,11 +51,11 @@
 <link rel="manifest" href="{{ base_path }}/images/manifest.json?v=2026phoenix">
 <link rel="mask-icon" href="{{ base_path }}/images/safari-pinned-tab.svg?v=2026phoenix" color="#7f1416">
 <link rel="shortcut icon" href="/images/favicon.ico?v=2026phoenix">
-<meta name="msapplication-TileColor" content="#fdfbf8">
+<meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="{{ base_path }}/images/mstile-144x144.png?v=2026phoenix">
 <meta name="msapplication-config" content="{{ base_path }}/images/browserconfig.xml?v=2026phoenix">
-<meta name="theme-color" content="#fdfbf8" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#161514" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f0f0f0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222222" media="(prefers-color-scheme: dark)">
 <link rel="stylesheet" href="{{ base_path }}/assets/css/academicons.css"/>
 
 <script type="text/x-mathjax-config"> MathJax.Hub.Config({ TeX: { equationNumbers: { autoNumber: "all" } } }); </script>

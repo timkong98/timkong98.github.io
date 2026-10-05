@@ -51,7 +51,7 @@
       }
       var m = document.createElement('meta');
       m.setAttribute('name', 'theme-color');
-      m.setAttribute('content', effective() === 'dark' ? '#161514' : '#fdfbf8');
+      m.setAttribute('content', effective() === 'dark' ? '#222222' : '#f0f0f0');
       document.head.appendChild(m);
     }
   }
