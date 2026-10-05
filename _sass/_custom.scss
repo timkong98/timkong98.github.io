@@ -115,10 +115,6 @@ html {
   font-size: 16px;
   /* in-page anchors (#honors etc.) land below the sticky bar, not under it */
   scroll-padding-top: $bar-h + 1rem;
-
-  @media (min-width: 48em) {
-    font-size: 16px;
-  }
 }
 
 body {
@@ -181,10 +177,6 @@ body {
 
   &::after {
     display: none;
-  }
-
-  @media (min-width: 80em) {
-    max-width: none;
   }
 }
 
@@ -522,10 +514,6 @@ html[data-theme="light"] .theme-toggle__to-light {
   @media (min-width: 57.8125em) {
     padding-top: $main-top;
   }
-
-  @media (min-width: 80em) {
-    max-width: $content-max;
-  }
 }
 
 @media (min-width: 57.8125em) {
@@ -537,7 +525,7 @@ html[data-theme="light"] .theme-toggle__to-light {
   }
 
   /* .archive is the content wrapper for `layout: archive` (Publications, CV);
-     .page is the one for `layout: single`/`talk`. Both must be listed, or the
+     .page is the one for `layout: single`. Both must be listed, or the
      one left on susy's 83% width overflows the row next to the sidebar and
      wraps underneath it. */
   .page,
@@ -739,12 +727,6 @@ select:focus-visible,
   @media (min-width: 57.8125em) {
     width: 100%;
     margin: 0;
-
-    img {
-      max-width: none;
-      padding: 0;
-      border: 0;
-    }
   }
 }
 
@@ -1440,7 +1422,7 @@ a.btn--ghost:hover {
 }
 
 /*
-   Share row on publication / talk pages: the same outlined buttons as the
+   Share row on publication pages: the same outlined buttons as the
    publication links instead of the theme's brand-coloured blocks.
    ========================================================================== */
 
@@ -1562,10 +1544,6 @@ a.btn--ghost:hover {
     max-width: $content-max;
     margin-top: 0;
     padding: 2.5rem $gutter;
-
-    @media (min-width: 80em) {
-      max-width: $content-max;
-    }
   }
 
   a,

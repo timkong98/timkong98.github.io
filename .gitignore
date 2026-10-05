@@ -1,7 +1,3 @@
 _site/
 .sass-cache/
-
-_talks/.DS_Store
-_teaching/.DS_Store
-files/.DS_Store
-_pages/.DS_Store
+.DS_Store

@@ -1,4 +1,0 @@
-# Per-page author overrides, keyed by the `author:` value in a page's front matter.
-#
-# Unused: no page sets `author:`, so _includes/author-profile.html falls through to
-# site.author in _config.yml, which drives the sidebar everywhere.

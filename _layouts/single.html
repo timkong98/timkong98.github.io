@@ -50,8 +50,6 @@ layout: default
             {% if page.paperurl %}<a class="pub__link" href="{{ page.paperurl }}">Publisher</a>{% endif %}
             {% if page.arxiv %}<a class="pub__link" href="{{ page.arxiv }}">arXiv</a>{% endif %}
           </p>
-        {% elsif page.collection == 'teaching' %}
-          <p> {{ page.type }}, <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }} </p>
         {% elsif page.venue and page.date %}
           <p> <i>{{ page.venue }}</i>, {{ page.date | default: "1900-01-01" | date: "%Y" }} </p>
         {% elsif page.date %}
