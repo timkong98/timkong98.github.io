@@ -6,6 +6,11 @@
 
 talks:
   - title: "Continuum Model for Twisted Bilayer Graphene with Strain and Relaxation"
+    venue: "NJIT Fluids Mechanics and W aves Seminar"
+    location: "Online"
+    date: "2026.11"
+
+  - title: "Continuum Model for Twisted Bilayer Graphene with Strain and Relaxation"
     venue: "NSF RTG Conference: Materials and Optimization"
     location: "Salt Lake City, UT"
     date: "2026.10"
@@ -74,6 +79,6 @@ posters:
 
   - title: "A Comparison of Minimum Action Methods for Computing Noise-induced Transitions of the Lorenz System"
     venue: "SIAM Conference on Applications of Dynamical Systems (DS21)"
-    location: "Remote"
+    location: "Online"
     date: "2021.05"
     url: "/files/Poster.pdf"
